@@ -17,7 +17,7 @@ class dbResult {
     return [];
   }
 
-  public function dto($template = NULL): dto {
+  public function dto($template = NULL): ?dto {
 
     if ($dto = $this->fetch()) {
 

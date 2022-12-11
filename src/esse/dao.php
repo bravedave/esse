@@ -21,7 +21,7 @@ abstract class dao {
   protected $_db_allways_check_structure = true;
   protected $template = null;
 
-  public db $db;
+  public $db;
   public $log = false;
 
   function __construct(db $db = null) {
@@ -29,6 +29,8 @@ abstract class dao {
     if (!config::checkDBconfigured()) throw new Exceptions\DBNotConfigured;
 
     $this->db = is_null($db) ? config::dbi() : $db;
+
+    logger::info( sprintf('<%s> %s', gettype($this->db), __METHOD__));
 
     $this->TableChecks();
     $this->before();

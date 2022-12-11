@@ -18,10 +18,10 @@ use config, ZipArchive;
 use SQLite3;
 
 class db extends esseDB {
-  protected SQLite3 $_db = false;
-  protected $_path = null;
+  protected ?SQLite3 $_db = null;
+  protected ?string $_path = null;
 
-  protected static self $_instance = null;
+  protected static ?self $_instance = null;
 
   static function instance(): self {
 
@@ -47,18 +47,17 @@ class db extends esseDB {
   }
 
   public function __destruct() {
-    if ($this->_db) {
-      $this->_db->close();
-    }
 
-    $this->_db = false;
+    if ($this->_db) $this->_db->close();
+    $this->_db = null;
   }
 
   function __invoke(string $query): ?esse_dbResult {
     return $this->result($query);
   }
 
-  public function dump() {
+  public function dump(): void {
+
     if ($tables = $this->tables()) {
 
       $uID = 0;
@@ -139,7 +138,7 @@ class db extends esseDB {
     return ($this->_path);
   }
 
-  public function Insert(string $table, array $a) : int {
+  public function Insert(string $table, array $a): int {
     /**
      * Insert values into SQLite table
      *
@@ -244,7 +243,7 @@ class db extends esseDB {
     return ($this->Q($sql));
   }
 
-  public function valid() : bool {
+  public function valid(): bool {
 
     if (!self::$_instance) self::$_instance = new self;
 

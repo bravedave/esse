@@ -21,8 +21,13 @@ class dbResult extends esse_dbResult {
     if ($db) $this->db = $db;
   }
 
-  public function fetch() : array {
+  public function fetch(): array {
 
-    return $this->result->fetchArray(SQLITE3_ASSOC);
+    if ($ret = $this->result->fetchArray(SQLITE3_ASSOC)) {
+
+      return $ret;
+    }
+
+    return [];
   }
 }

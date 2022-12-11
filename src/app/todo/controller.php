@@ -12,7 +12,6 @@ namespace todo;
 
 use bravedave\esse;
 use bravedave\esse\request;
-use strings;
 
 class controller extends esse\controller {
 
@@ -34,6 +33,7 @@ class controller extends esse\controller {
 
     parent::before();
     $this->viewPath[] = __DIR__ . '/views/';  // location for module specific views
+    config::todo_checkdatabase();
   }
 
   protected function postHandler() {

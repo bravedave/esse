@@ -28,6 +28,9 @@ abstract class db {
     return date("Y-m-d H:i:s", time());
   }
 
+  public function dump(): void {
+  }
+
   public function escape(string $s): string {
     return $s;
   }
