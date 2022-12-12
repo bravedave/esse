@@ -12,7 +12,6 @@ namespace bravedave\esse\controller;
 
 use bravedave\esse;
 use bravedave\esse\jslib;
-use bravedave\esse\logger;
 use config;
 
 /**

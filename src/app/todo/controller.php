@@ -12,20 +12,21 @@ namespace todo;
 
 use bravedave\esse;
 use bravedave\esse\json;
+use bravedave\esse\logger;
 use bravedave\esse\request;
 
 class controller extends esse\controller {
 
   protected function _index(): void {
 
-    $this->title = __NAMESPACE__;
+    $this->title = config::label;
 
     (esse\page::bootstrap())
       ->head($this->title)
       ->body()
       ->then(fn () => $this->load('nav'))
       ->main()
-      ->then(fn () => $this->load('blank'))
+      ->then(fn () => $this->load('matrix'))
       ->aside()
       ->then(fn () => $this->load('aside'));
   }
@@ -40,7 +41,54 @@ class controller extends esse\controller {
   protected function postHandler() {
 
     $action = request::post('action');
-    if ('todo-save' == $action) {
+    if ('get-by-id' == $action) {
+      /*
+        (_ => {
+          $.post(_.url('todo'), {
+            action: 'get-by-id',
+            id : 1
+          }).then(d => {
+            if ('ack' == d.response) {
+              console.log(d.data);
+            } else {
+              _.growl(d);
+            }
+          });
+
+        })(_esse_);
+       */
+      if ($id = (int)request::post('id')) {
+
+        $dao = new dao\todo;
+        if ($dto = $dao->getByID($id)) {
+
+          Json::ack($action)
+            ->add('data', $dto);
+        } else {
+
+          Json::nak($action);
+        }
+      } else {
+
+        Json::nak($action);
+      }
+    } elseif ('get-matrix' == $action) {
+      /*
+        (_ => {
+          $.post(_.url('todo'),{action: 'get-matrix'})
+            .then(d => {
+              if ('ack' == d.response) {
+                console.table(d.data);
+              } else {
+                _.growl(d);
+              }
+            });
+        })(_esse_);
+       */
+      $dao = new dao\todo;
+      Json::ack($action)
+        ->add('data', $dao->getMatrix());
+    } elseif ('todo-save' == $action) {
 
       $a = [
         'description' => (string)request::post('description'),

@@ -20,6 +20,7 @@ abstract class config {
   const libfiles = [
     __DIR__ . '/js/_esse_.js',
     __DIR__ . '/js/_esse_.get.js',
+    __DIR__ . '/js/_esse_.growl.js',
     __DIR__ . '/js/_esse_.url.js',
   ];
 

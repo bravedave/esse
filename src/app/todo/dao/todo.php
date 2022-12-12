@@ -16,6 +16,13 @@ class todo extends dao {
   protected $_db_name = 'todo';
   protected $template = __NAMESPACE__ . '\dto\todo';
 
+  public function getMatrix() : array {
+
+    $sql = 'SELECT * FROM `todo`';
+    if ( $res = $this->Result($sql)) return $this->dtoSet($res);
+    return [];
+  }
+
   public function Insert($a): int {
 
     $a['created'] = $a['updated'] = self::dbTimeStamp();

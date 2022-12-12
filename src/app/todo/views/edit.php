@@ -99,8 +99,7 @@ extract((array)$this->data);  ?>
                   .modal('hide');
               } else {
 
-                // _.growl(d);
-                console.log(d);
+                _.growl(d);
               }
             });
 

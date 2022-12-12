@@ -45,12 +45,20 @@ class application {
       $this->route = request::controller();
       $ctrl = new $controller($this->paths);
 
-      if (method_exists($ctrl, $method = request::method())) {
+      if (!method_exists($ctrl, $method = request::method())) $method = 'index';
 
-        $ctrl->{$method}();
+      if ($p1 = request::param1()) {
+
+        if ($p2 = request::param2()) {
+
+          $ctrl->{$method}($p1, $p2);
+        } else {
+
+          $ctrl->{$method}($p1);
+        }
       } else {
 
-        $ctrl->index();
+        $ctrl->{$method}();
       }
     } else {
 
@@ -65,12 +73,19 @@ class application {
         $this->route = request::controller();
         $ctrl = new $essecontroller($this->paths);
 
-        if (method_exists($ctrl, $method = request::method())) {
+        if (!method_exists($ctrl, $method = request::method())) $method = 'index';
+        if ($p1 = request::param1()) {
 
-          $ctrl->{$method}();
+          if ($p2 = request::param2()) {
+
+            $ctrl->{$method}($p1, $p2);
+          } else {
+
+            $ctrl->{$method}($p1);
+          }
         } else {
 
-          $ctrl->index();
+          $ctrl->{$method}();
         }
       } else {
 
