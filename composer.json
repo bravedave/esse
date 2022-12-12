@@ -3,6 +3,7 @@
   "description": "Essential Core Application",
   "type": "library",
   "license": "MIT",
+  "version": "0.0.1",
   "autoload": {
     "psr-4": {
       "bravedave\\esse\\": "src/esse/"
@@ -22,10 +23,13 @@
   "minimum-stability": "dev",
   "require": {
     "monolog/monolog": "2.x-dev",
-    "symfony/mailer": "6.0.x-dev"
+    "symfony/mailer": "6.0.x-dev",
+    "matthiasmullie/minify": "dev-master"
   },
   "require-dev": {
     "ext-apcu": "*",
+    "ext-sqlite3": "*",
+    "ext-posix": "*",
     "matthiasmullie/scrapbook": "*"
   },
   "scripts": {

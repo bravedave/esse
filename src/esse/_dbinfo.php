@@ -14,12 +14,12 @@ class _dbinfo extends dao {
 
   protected $_store = '';
 
-  protected function check() : void {
+  protected function check(): void {
 
     $this->checkDIR(__DIR__);
   }
 
-  protected function checkDIR($dir) : void {
+  protected function checkDIR($dir): void {
 
     logger::info(sprintf('<checking %s> %s', $dir, __METHOD__));
     if ($glob = glob($dir . '/db/*.php')) {
@@ -32,7 +32,7 @@ class _dbinfo extends dao {
     }
   }
 
-  protected function db_version_file() : string {
+  protected function db_version_file(): string {
 
     return implode(
       DIRECTORY_SEPARATOR,
@@ -71,9 +71,7 @@ class _dbinfo extends dao {
       $_version = $json->{$key} = $version;
 
       file_put_contents($store, json_encode($json, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-      if (posix_geteuid() == fileowner($store)) {
-        chmod($store, 0666);
-      }
+      if (posix_geteuid() == fileowner($store)) chmod($store, 0666);
       clearstatcache();
     } else {
 

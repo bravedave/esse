@@ -10,7 +10,7 @@
 
 namespace bravedave\esse;
 
-use db, config;
+use config;
 
 abstract class dao {
   protected $_sql_getByID = 'SELECT * FROM %s WHERE id = %d';
@@ -21,7 +21,7 @@ abstract class dao {
   protected $_db_allways_check_structure = true;
   protected $template = null;
 
-  public $db;
+  public db $db;
   public $log = false;
 
   function __construct(db $db = null) {
@@ -29,8 +29,6 @@ abstract class dao {
     if (!config::checkDBconfigured()) throw new Exceptions\DBNotConfigured;
 
     $this->db = is_null($db) ? config::dbi() : $db;
-
-    logger::info( sprintf('<%s> %s', gettype($this->db), __METHOD__));
 
     $this->TableChecks();
     $this->before();
@@ -306,7 +304,7 @@ abstract class dao {
     return $dto;
   }
 
-  public function Insert(array $a) {
+  public function Insert(array $a): int {
 
     if (is_null($this->db_name())) throw new Exceptions\DBNameIsNull;
 

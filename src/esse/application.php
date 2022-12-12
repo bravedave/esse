@@ -78,7 +78,12 @@ class application {
       }
     }
 
-    logger::debug('exit application : ' . __METHOD__);
+    // logger::debug('exit application : ' . __METHOD__);
+  }
+
+  public static function app(): ?self {
+
+    return self::$instance;
   }
 
   public static function getRootPath(): string {
@@ -116,7 +121,7 @@ class application {
         ]))) {
 
           include_once $lib;
-          logger::debug(sprintf('<lib: %s> %s', $lib, __METHOD__));
+          // logger::debug(sprintf('<lib: %s> %s', $lib, __METHOD__));
           return true;
         }
 

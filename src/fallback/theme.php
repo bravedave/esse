@@ -8,5 +8,5 @@
  *
 */
 
-class db extends \bravedave\esse\db {
+class theme extends \bravedave\esse\theme {
 }

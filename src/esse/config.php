@@ -17,9 +17,17 @@ use bravedave\esse\Exceptions\{
 
 abstract class config {
 
+  const libfiles = [
+    __DIR__ . '/js/_esse_.js',
+    __DIR__ . '/js/_esse_.get.js',
+    __DIR__ . '/js/_esse_.url.js',
+  ];
+
   const use_full_url = false;
 
   static protected ?string $_dataPath = null;
+
+  static $CONTENT_SECURITY_ENABLED = true;
 
   static $DATE_FORMAT = 'Y-m-d';
   static $DATE_FORMAT_LONG = 'D M d Y';
@@ -50,6 +58,8 @@ abstract class config {
 
   static string $EMAILDOMAIN = 'example.tld';
   static bool $EMAIL_ERRORS_TO_SUPPORT = false;
+
+  static int $JS_EXPIRE_TIME = 300;
 
   static string $MAILDSN = '';
   static string $MAILSERVER = 'localhost';
@@ -171,7 +181,7 @@ abstract class config {
   }
 
   protected static $_dbi = null;
-  public static function dbi() {
+  public static function dbi(): db {
 
     if (is_null(self::$_dbi)) {
 
@@ -293,5 +303,14 @@ abstract class config {
         self::$DB_CACHE = '';
       }
     }
+  }
+
+  /**
+   * return a writable path with a trailing slash
+   */
+  static public function tempdir(): string {
+
+    $dir = rtrim(sys_get_temp_dir(), '/\\');
+    return ($dir . DIRECTORY_SEPARATOR);
   }
 }
