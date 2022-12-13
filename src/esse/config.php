@@ -62,8 +62,11 @@ abstract class config {
   static bool $EMAIL_ERRORS_TO_SUPPORT = false;
 
   static int $JS_EXPIRE_TIME = 300;
+  static int $JQUERY_EXPIRE_TIME = 900;
   static int $FONT_EXPIRE_TIME = 14400;
   static int $CSS_EXPIRE_TIME = 900;
+  static $IMG_EXPIRE_TIME = 60;
+  static int $CORE_IMG_EXPIRE_TIME = 60;  // set on images that come from the /image location
 
   static string $MAILDSN = '';
   static string $MAILSERVER = 'localhost';
