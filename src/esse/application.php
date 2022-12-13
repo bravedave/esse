@@ -40,40 +40,22 @@ class application {
       'controller'
     ]);
 
+    if (!class_exists($controller)) {
+      // esse controller
+      $controller = implode('\\', [
+        __NAMESPACE__,
+        'controller',
+        request::controller()
+      ]);
+    }
+
     if (class_exists($controller)) {
 
       $this->route = request::controller();
       $ctrl = new $controller($this->paths);
 
-      if (!method_exists($ctrl, $method = request::method())) $method = 'index';
+      if (method_exists($ctrl, $method = request::method())) {
 
-      if ($p1 = request::param1()) {
-
-        if ($p2 = request::param2()) {
-
-          $ctrl->{$method}($p1, $p2);
-        } else {
-
-          $ctrl->{$method}($p1);
-        }
-      } else {
-
-        $ctrl->{$method}();
-      }
-    } else {
-
-      $essecontroller = implode('\\', [
-        __NAMESPACE__,
-        'controller',
-        request::controller()
-      ]);
-
-      if (class_exists($essecontroller)) {
-
-        $this->route = request::controller();
-        $ctrl = new $essecontroller($this->paths);
-
-        if (!method_exists($ctrl, $method = request::method())) $method = 'index';
         if ($p1 = request::param1()) {
 
           if ($p2 = request::param2()) {
@@ -87,10 +69,28 @@ class application {
 
           $ctrl->{$method}();
         }
+      } elseif ($method) {
+
+        if ($p1 = request::param1()) {
+
+          if ($p2 = request::param2()) {
+
+            $ctrl->index($method, $p1, $p2);
+          } else {
+
+            $ctrl->index($method, $p1);
+          }
+        } else {
+
+          $ctrl->index($method);
+        }
       } else {
 
-        printf('%s not found', $controller);
+        $ctrl->index();
       }
+    } else {
+
+      printf('%s not found', $controller);
     }
 
     // logger::debug('exit application : ' . __METHOD__);

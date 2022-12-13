@@ -12,6 +12,7 @@ namespace bravedave\esse\controller;
 
 use bravedave\esse;
 use bravedave\esse\jslib;
+use bravedave\esse\logger;
 use config;
 
 /**
@@ -29,6 +30,9 @@ class assets extends esse\controller {
         'jsFiles' => config::libfiles,
         'libFile' => config::tempdir() . '_esse_.js'
       ]);
+    } else {
+
+      logger::info(sprintf('<%s> %s', $lib, __METHOD__));
     }
   }
 }
