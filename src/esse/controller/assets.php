@@ -37,17 +37,22 @@ class assets extends esse\controller {
       print file_get_contents($path);
     } elseif ('bootstrap.css' == $lib) {
 
-      $path = __DIR__ . '/../resource/bootstrap-orange.min.css';
-      response::css_headers(filemtime($path), config::$CSS_EXPIRE_TIME);
-      print file_get_contents($path);
+      $path = __DIR__ . '/../css/bootstrap.min.css';
+      if ('blue' == config::$THEME) {
+        $path = __DIR__ . '/../css/bootstrap-blue.min.css';
+      } elseif ('orange' == config::$THEME) {
+        $path = __DIR__ . '/../css/bootstrap-orange.min.css';
+      } elseif ('pink' == config::$THEME) {
+        $path = __DIR__ . '/../css/bootstrap-pink.min.css';
+      }
+
+      response::serve($path);
     } elseif ('bootstrap-icons.css' == $lib) {
 
       $path = self::vendor . '/twbs/bootstrap-icons/font/bootstrap-icons.css';
       if (file_exists($path)) {
 
-        // logger::info(sprintf('<found : %s> %s', $path, __METHOD__));
-        response::css_headers(filemtime($path), config::$CSS_EXPIRE_TIME);
-        print file_get_contents($path);
+        response::serve($path);
       } else {
 
         logger::info(sprintf('<%s> %s', $path, __METHOD__));
@@ -59,16 +64,7 @@ class assets extends esse\controller {
         $path = self::vendor . '/twbs/bootstrap-icons/font/fonts/' . $file;
         if (file_exists($path)) {
 
-          // logger::info(sprintf('<found : %s> %s', $path, __METHOD__));
-          if ('bootstrap-icons.woff2' == $file) {
-
-            response::woff2_headers();
-          } else {
-
-            response::woff_headers();
-          }
-
-          print file_get_contents($path);
+          response::serve($path);
         } else {
 
           logger::info(sprintf('<%s> %s', $path, __METHOD__));
@@ -102,5 +98,4 @@ class assets extends esse\controller {
       logger::info(sprintf('<%s> %s', $lib, __METHOD__));
     }
   }
-
 }

@@ -128,7 +128,7 @@ abstract class response {
   public static function serve($path) {
 
     $debug = false;
-    $debug = true;
+    // $debug = true;
 
     if (file_exists($path)) {
 
@@ -147,7 +147,7 @@ abstract class response {
       $path_parts = pathinfo($path);
       $mimetype = mime_content_type($path);
 
-      if ($debug) logger::debug(sprintf('<%s> %s', $mimetype, __METHOD__));
+      if ($debug) logger::debug(sprintf('<%s> <%s> %s', $mimetype, $path, __METHOD__));
 
       if ('image/jpeg' == $mimetype) {
 
@@ -224,9 +224,9 @@ abstract class response {
           if ($debug) logger::debug("served: $path");
         } elseif ($ext == 'woff' || $ext == 'woff2') {
 
-          self::headers('application/font-woff', filemtime($path), config::$FONT_EXPIRE_TIME);
+          self::headers('application/font-' . $ext, filemtime($path), config::$FONT_EXPIRE_TIME);
           readfile($path);
-          if ($debug) logger::debug("served: $path");
+          if ($debug) logger::debug(sprintf('<served: %s> <%s> %s', $path, $ext, __METHOD__));
         } elseif ($ext == 'jpg' || $ext == 'jpeg') {
 
           if (strstr($path, url::$URL . 'images/')) {
