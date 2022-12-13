@@ -38,6 +38,14 @@ abstract class response {
     }
   }
 
+  static function css_headers(int $modifyTime = 0, int $expires = null) {
+
+    if (is_null($expires)) $expires = config::$CSS_EXPIRE_TIME;
+
+    self::_common_headers($modifyTime, $expires);
+    header('Content-type: text/css');
+  }
+
   static function javascript_headers(int $modifyTime = 0, int $expires = 0): void {
 
     self::_common_headers($modifyTime, $expires);
@@ -60,5 +68,19 @@ abstract class response {
 
     if (config::$CONTENT_SECURITY_ENABLED) header("Content-Security-Policy: frame-ancestors 'self'");
     header(sprintf("Content-type: text/html; charset=%s", $charset));
+  }
+
+  static function woff_headers(int $modifyTime = 0, int $length = 0): void {
+
+    self::_common_headers($modifyTime);
+    header('Content-type: font/woff');
+    if ($length) header(sprintf('Content-length: %s', $length));
+  }
+
+  static function woff2_headers(int $modifyTime = 0, int $length = 0): void {
+
+    self::_common_headers($modifyTime);
+    header('Content-type: font/woff2');
+    if ($length) header(sprintf('Content-length: %s', $length));
   }
 }

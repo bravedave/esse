@@ -104,7 +104,20 @@ class controller extends esse\controller {
         $dao->Insert($a);
       }
 
-      json::ack($action); // json return { "response": "ack", "description" : "risorsa-save" }
+      json::ack($action);
+    } elseif ('todo-set-complete' == $action || 'todo-set-complete-undo' == $action) {
+
+      if ($id = (int)request::post('id')) {
+
+        (new dao\todo)
+          ->UpdateByID([
+            'complete' => 'todo-set-complete-undo' == $action ? 0 : 1
+          ], $id);
+        json::ack($action);
+      } else {
+
+        json::nak($action);
+      }
     } else {
 
       parent::postHandler();

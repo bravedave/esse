@@ -69,13 +69,13 @@
         let header = $('<div class="toast-header"></div>').appendTo(toast);
 
         if (options.growlClass == 'error') {
-          header.append('<i class="bi bi-square-fill mr-2 text-danger"></i>');
+          header.append('<i class="bi bi-square-fill me-2 text-danger"></i>');
         }
         else {
-          header.append('<i class="bi bi-square-fill mr-2 text-success"></i>');
+          header.append('<i class="bi bi-square-fill me-2 text-success"></i>');
         }
 
-        let timer = $('<small class="text-muted ml-2">just now</small>')
+        let timer = $('<small class="text-muted ms-auto">just now</small>')
         header
           .append(`<strong class="me-auto">${options.title}</strong>`)
           .append(timer)

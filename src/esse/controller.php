@@ -32,7 +32,8 @@ class controller {
 
   protected function postHandler() {
 
-    print 'nak';
+    $action = request::post('action');
+    json::nak($action);
   }
 
   public function __construct(array $paths) {

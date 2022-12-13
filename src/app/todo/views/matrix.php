@@ -10,26 +10,15 @@
 
 namespace todo;
 
-use strings;
+use strings;  ?>
 
-?>
-<div class="table-responsive">
-  <table class="table table-sm" id="<?= $_uidMatrix = strings::rand() ?>">
-    <thead class="small">
-      <tr>
-        <td>description</td>
-        <td>complete</td>
-      </tr>
-    </thead>
-
-    <tbody></tbody>
-
-  </table>
-</div>
+<ul class="list-unstyled" id="<?= $_uidMatrix = strings::rand() ?>"></ul>
 <script>
   (_ => {
 
-    const edit = function() {
+    const edit = function(e) {
+
+      e.stopPropagation();
 
       let _me = $(this);
       let _dto = _me.data('dto');
@@ -39,26 +28,36 @@ use strings;
     };
 
     const matrix = data => {
-      let table = $('#<?= $_uidMatrix ?>');
-      let tbody = $('#<?= $_uidMatrix ?> > tbody');
+      let ul = $('#<?= $_uidMatrix ?>');
 
-      tbody.html('');
+      ul.html('');
       $.each(data, (i, dto) => {
-        $(`<tr style="cursor: pointer">
-          <td class="js-description">${dto.description}</td>
-          <td class="js-complete">${dto.complete}</td>
-        </tr>`)
+
+        let li = $(`<li style="cursor: pointer">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" ${dto.complete ? 'checked' : '' }>
+              <label class="form-check-label">${dto.description}</label>
+            </div>
+          </li`)
           .data('dto', dto)
-          .on('click', function(e) {
-
-            e.stopPropagation();
-            e.preventDefault();
-
-            $(this).trigger('edit');
-          })
           .on('edit', edit)
           .on('refresh', refresh)
-          .appendTo(tbody);
+          .on('toggle', toggle)
+          .appendTo(ul);
+
+        li.find('input').on('change', function(e) {
+
+          $(this).trigger('toggle');
+        });
+
+        li.find('label').on('click', function(e) {
+
+          e.stopPropagation();
+          e.preventDefault();
+
+          $(this).trigger('edit');
+        });
+
       });
     };
 
@@ -75,8 +74,10 @@ use strings;
 
         if ('ack' == d.response) {
 
-          $('.js-description', _me).html(d.data.description);
-          $('.js-complete', _me).html(d.data.complete);
+          let dto = d.data;
+          _me.data('dto', dto);
+          _me.find('label').html(dto.description);
+          _me.find('input[type="checkbox"]').prop('checked', 1 == Number(dto.complete));
         } else {
 
           _.growl(d);
@@ -84,8 +85,30 @@ use strings;
       });
     };
 
+    const toggle = function(e) {
+      e.stopPropagation();
+
+      let _me = $(this);
+      let _dto = _me.data('dto');
+
+      let checked = _me.find('input[type="checkbox"]').prop('checked');
+
+      $.post(_.url('<?= $this->route ?>'), {
+        action: checked ? 'todo-set-complete-undo' : 'todo-set-complete',
+        id: _dto.id
+      }).then(d => {
+
+        _.growl(d);
+        if ('ack' == d.response) {
+
+          _me.trigger('refresh');
+        }
+      });
+    };
+
     $('#<?= $_uidMatrix ?>')
       .on('refresh', function(e) {
+
         $.post(_.url('<?= $this->route ?>'), {
             action: 'get-matrix'
           })

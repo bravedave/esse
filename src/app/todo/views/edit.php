@@ -43,7 +43,7 @@ extract((array)$this->data);  ?>
             <div class="offset-md-3 col mb-2">
               <div class="form-check">
 
-                <input type="checkbox" class="form-check-input" name="complete" id="<?= $_uid = strings::rand() ?>" <?= $dto->complete ? 'checked' : '' ?>>
+                <input type="checkbox" class="form-check-input" name="complete" value="1" id="<?= $_uid = strings::rand() ?>" <?= $dto->complete ? 'checked' : '' ?>>
                 <label class="form-check-label" for="<?= $_uid ?>">complete</label>
               </div>
             </div>

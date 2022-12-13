@@ -21,6 +21,7 @@ abstract class config {
     __DIR__ . '/js/_esse_.js',
     __DIR__ . '/js/_esse_.get.js',
     __DIR__ . '/js/_esse_.growl.js',
+    __DIR__ . '/js/_esse_.randomString.js',
     __DIR__ . '/js/_esse_.url.js',
   ];
 
@@ -61,6 +62,8 @@ abstract class config {
   static bool $EMAIL_ERRORS_TO_SUPPORT = false;
 
   static int $JS_EXPIRE_TIME = 300;
+  static int $FONT_EXPIRE_TIME = 14400;
+  static int $CSS_EXPIRE_TIME = 900;
 
   static string $MAILDSN = '';
   static string $MAILSERVER = 'localhost';

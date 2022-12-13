@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b66764506cce1e5b17e2878fe00feee2",
+    "content-hash": "9ab4f1d875c650ae1754ce2bf4b4e014",
     "packages": [
         {
             "name": "doctrine/lexer",
@@ -1276,6 +1276,46 @@
                 }
             ],
             "time": "2022-11-25T10:21:52+00:00"
+        },
+        {
+            "name": "twbs/bootstrap-icons",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/icons.git",
+                "reference": "81a1c8044041374d9b886536b9977a2b2b95c053"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/icons/zipball/81a1c8044041374d9b886536b9977a2b2b95c053",
+                "reference": "81a1c8044041374d9b886536b9977a2b2b95c053",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Otto",
+                    "email": "markdotto@gmail.com"
+                }
+            ],
+            "description": "Official open source SVG icon library for Bootstrap",
+            "homepage": "https://icons.getbootstrap.com/",
+            "keywords": [
+                "bootstrap",
+                "icon font",
+                "icons",
+                "svg"
+            ],
+            "support": {
+                "issues": "https://github.com/twbs/icons/issues",
+                "source": "https://github.com/twbs/icons/tree/main"
+            },
+            "time": "2022-12-06T06:23:48+00:00"
         }
     ],
     "packages-dev": [
@@ -1491,7 +1531,8 @@
     "stability-flags": {
         "monolog/monolog": 20,
         "symfony/mailer": 20,
-        "matthiasmullie/minify": 20
+        "matthiasmullie/minify": 20,
+        "twbs/bootstrap-icons": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -24,7 +24,8 @@
   "require": {
     "monolog/monolog": "2.x-dev",
     "symfony/mailer": "6.0.x-dev",
-    "matthiasmullie/minify": "dev-master"
+    "matthiasmullie/minify": "dev-master",
+    "twbs/bootstrap-icons": "dev-main"
   },
   "require-dev": {
     "ext-apcu": "*",
