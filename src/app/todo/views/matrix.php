@@ -12,7 +12,7 @@ namespace todo;
 
 use strings;  ?>
 
-<ul class="list-unstyled" id="<?= $_uidMatrix = strings::rand() ?>"></ul>
+<ul class="list-unstyled m-md-5" id="<?= $_uidMatrix = strings::rand() ?>"></ul>
 <script>
   (_ => {
 
@@ -94,7 +94,7 @@ use strings;  ?>
       let checked = _me.find('input[type="checkbox"]').prop('checked');
 
       $.post(_.url('<?= $this->route ?>'), {
-        action: checked ? 'todo-set-complete-undo' : 'todo-set-complete',
+        action: checked ? 'todo-set-complete' : 'todo-set-complete-undo',
         id: _dto.id
       }).then(d => {
 

@@ -102,6 +102,8 @@ abstract class url {
     self::$URL = URL;
     self::$HOME = URL;
 
+    // logger::info(self::$URL);
+
     $protocol = (
       ($_SERVER['HTTPS'] ?? 'off') !== 'off'
       ||

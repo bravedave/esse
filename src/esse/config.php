@@ -25,7 +25,7 @@ abstract class config {
     __DIR__ . '/js/_esse_.url.js',
   ];
 
-  const use_full_url = false;
+  const use_full_url = true;
 
   static protected ?string $_dataPath = null;
 
