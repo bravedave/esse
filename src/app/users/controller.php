@@ -8,7 +8,7 @@
  *
 */
 
-namespace todo;
+namespace users;
 
 use bravedave\esse\json;
 use bravedave\esse\page;
@@ -30,7 +30,7 @@ class controller extends \controller {
   protected function before(): void {
 
     $this->viewPath[] = __DIR__ . '/views/';  // location for module specific views
-    config::todo_checkdatabase();
+    config::users_checkdatabase();
     parent::before();
   }
 
@@ -40,7 +40,7 @@ class controller extends \controller {
     if ('get-by-id' == $action) {
       /*
         (_ => {
-          $.post(_.url('todo'), {
+          $.post(_.url('users'), {
             action: 'get-by-id',
             id : 1
           }).then(d => {
@@ -55,7 +55,7 @@ class controller extends \controller {
        */
       if ($id = (int)request::post('id')) {
 
-        $dao = new dao\todo;
+        $dao = new dao\users;
         if ($dto = $dao->getByID($id)) {
 
           Json::ack($action)
@@ -71,7 +71,7 @@ class controller extends \controller {
     } elseif ('get-matrix' == $action) {
       /*
         (_ => {
-          $.post(_.url('todo'),{action: 'get-matrix'})
+          $.post(_.url('users'),{action: 'get-matrix'})
             .then(d => {
               if ('ack' == d.response) {
                 console.table(d.data);
@@ -81,17 +81,17 @@ class controller extends \controller {
             });
         })(_esse_);
        */
-      $dao = new dao\todo;
+      $dao = new dao\users;
       Json::ack($action)
         ->add('data', $dao->getMatrix());
-    } elseif ('todo-save' == $action) {
+    } elseif ('users-save' == $action) {
 
       $a = [
         'description' => (string)request::post('description'),
         'complete' => (int)request::post('complete')
       ];
 
-      $dao = new dao\todo;
+      $dao = new dao\users;
       if ($id = (int)request::post('id')) {
 
         $dao->UpdateByID($a, $id);
@@ -101,19 +101,6 @@ class controller extends \controller {
       }
 
       json::ack($action);
-    } elseif ('todo-set-complete' == $action || 'todo-set-complete-undo' == $action) {
-
-      if ($id = (int)request::post('id')) {
-
-        (new dao\todo)
-          ->UpdateByID([
-            'complete' => 'todo-set-complete-undo' == $action ? 0 : 1
-          ], $id);
-        json::ack($action);
-      } else {
-
-        json::nak($action);
-      }
     } else {
 
       parent::postHandler();
@@ -124,12 +111,12 @@ class controller extends \controller {
 
     $this->data = (object)[
       'title' => $this->title = config::label,
-      'dto' => new dao\dto\todo
+      'dto' => new dao\dto\users
     ];
 
     if ($id = (int)$id) {
 
-      $this->data->dto = (new dao\todo)
+      $this->data->dto = (new dao\users)
         ->getByID($id);
       $this->data->title .= ' edit';
     }

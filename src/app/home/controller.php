@@ -10,38 +10,34 @@
 
 namespace home;
 
-use bravedave\esse;
+use bravedave\esse\page;
 use config;
 
-class controller extends esse\controller {
+class controller extends \controller {
 
   protected function _index(): void {
 
     $this->title = config::$WEBNAME;
 
-    (esse\page::bootstrap())
+    (page::bootstrap())
       ->head($this->title)
-      ->body()
-      ->then(fn () => $this->load('nav'))
-      ->main()
-      ->then(fn () => $this->load('main'))
-      ->aside()
-      ->then(fn () => $this->load('aside'));
+      ->body()->then(fn () => $this->load('nav'))
+      ->main()->then(fn () => $this->load('main'))
+      ->aside()->then(fn () => $this->load('aside'));
   }
 
   protected function before(): void {
 
-    parent::before();
     $this->viewPath[] = __DIR__ . '/views';
+    parent::before();
   }
 
   public function goodbye() {
 
     $this->title = 'Goodbye !';
 
-    (esse\page::bootstrap())
+    (page::bootstrap())
       ->head($this->title)
-      ->body()
-      ->then(fn () => printf('<h1 class="text-center mt-4">%s</h1>', $this->title));
+      ->body()->then(fn () => printf('<h1 class="text-center mt-4">%s</h1>', $this->title));
   }
 }

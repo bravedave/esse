@@ -10,16 +10,15 @@
 
 namespace bravedave\esse\controller;
 
-use bravedave\esse;
 use bravedave\esse\jslib;
 use bravedave\esse\logger;
 use bravedave\esse\response;
-use config;
+use config, controller;
 
 /**
  * a default home controller
  */
-class assets extends esse\controller {
+class assets extends controller {
 
   const vendor = __DIR__ . '/../../../vendor';
 
@@ -28,8 +27,7 @@ class assets extends esse\controller {
     if ('bootstrap.js' == $lib) {
 
       $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js';
-      response::javascript_headers(filemtime($path), config::$JS_EXPIRE_TIME);
-      print file_get_contents($path);
+      response::serve($path);
     } elseif ('bootstrap.bundle.min.js.map' == $lib) {
 
       $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js.map';
@@ -78,9 +76,7 @@ class assets extends esse\controller {
 
   public function jquery() {
 
-    $path = __DIR__ . '/../js/jquery-3.6.1.min.js';
-    response::javascript_headers(filemtime($path), config::$JS_EXPIRE_TIME);
-    print file_get_contents($path);
+    response::serve(__DIR__ . '/../js/jquery-3.6.1.min.js');
   }
 
   public function js($lib = 'esse.js'): void {

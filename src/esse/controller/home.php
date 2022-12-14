@@ -10,12 +10,13 @@
 
 namespace bravedave\esse\controller;
 
-use bravedave\esse;
+use bravedave\esse\page;
+use controller;
 
 /**
  * a default home controller
  */
-class home extends esse\controller {
+class home extends controller {
 
   /**
    * called by index if this method is GET
@@ -24,13 +25,10 @@ class home extends esse\controller {
 
     $this->title = 'home - default';
 
-    (esse\page::bootstrap())
+    (page::bootstrap())
       ->head($this->title)
-      ->body()
-      ->then(fn () => $this->load('nav'))
-      ->main()
-      ->then(fn () => $this->load('main'))
-      ->aside()
-      ->then(fn () => $this->load('aside'));
+      ->body()->then(fn () => $this->load('nav'))
+      ->main()->then(fn () => $this->load('main'))
+      ->aside()->then(fn () => $this->load('aside'));
   }
 }

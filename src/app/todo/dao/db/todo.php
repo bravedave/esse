@@ -8,6 +8,8 @@
  *
 */
 
+use bravedave\esse\db;
+
 $dbc = db::dbCheck('todo');
 
 // note id, autoincrement primary key is added to all tables - no need to specify

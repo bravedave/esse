@@ -170,21 +170,23 @@ abstract class response {
           if ($debug) logger::debug("served: $path");
         } elseif ($ext == 'js') {
 
-          $expires = 0;
-          if (strstr($path, 'jquery-'))
-            $expires = config::$JQUERY_EXPIRE_TIME;
-          elseif (strstr($path, 'inputosaurus.js'))
-            $expires = config::$JQUERY_EXPIRE_TIME;
-          elseif (strstr($path, 'tinylib.js'))
-            $expires = config::$JQUERY_EXPIRE_TIME;
-          elseif (strstr($path, 'moment.min.js'))
-            $expires = config::$JQUERY_EXPIRE_TIME;
-          elseif (strstr($path, 'bootstrap.min.js'))
-            $expires = config::$JQUERY_EXPIRE_TIME;
-          elseif (strstr($path, 'brayworthlib.js'))
-            $expires = config::$JQUERY_EXPIRE_TIME;
-          elseif (strings::endswith($path, '.js'))
-            $expires = config::$JS_EXPIRE_TIME;
+          $expires = strings::endswith($path, '.js') ? config::$JS_EXPIRE_TIME : 0;
+
+          $jqueries = [
+            'bootstrap.min.js',
+            'bootstrap.bundle.min.js',
+            'moment.min.js',
+            'bootstrap.min.js',
+            'jquery-'
+          ];
+          foreach ($jqueries as $j) {
+
+            if (true === strpos($path, $j)) {
+
+              $expires = config::$JQUERY_EXPIRE_TIME;
+              break;
+            }
+          }
 
           self::javascript_headers(filemtime($path), $expires);
           readfile($path);

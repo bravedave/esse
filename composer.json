@@ -22,6 +22,8 @@
   ],
   "minimum-stability": "dev",
   "require": {
+    "ext-fileinfo": "*",
+    "ext-posix": "*",
     "monolog/monolog": "2.x-dev",
     "symfony/mailer": "6.0.x-dev",
     "matthiasmullie/minify": "dev-master",
@@ -31,7 +33,6 @@
   "require-dev": {
     "ext-apcu": "*",
     "ext-sqlite3": "*",
-    "ext-posix": "*",
     "matthiasmullie/scrapbook": "*"
   },
   "scripts": {
