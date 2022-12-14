@@ -1,12 +1,13 @@
 # ESSE
 
-PHP exploits the PSR-4 Autoload standard
+PSR-4 defines a powerful Autoload standard for PHP Application
 
-There are many subsequent standards, but PSR-4 concerns itself
-  with the autoload capabilities of composer distributed apps
+This application exploits PSR-4 by crafting file locations and namespaces so that many php scripts can be combined into a powerful application without the need to specifically include files
 
-By crafting file locations and namespaces many php scrips can be combined
-  into a powerful application without the need to specifically include files
+## Features
+
+* MVC Architecture
+* Supports MariaDB and SQLite
 
 ## Credits:
 
