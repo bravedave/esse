@@ -11,6 +11,6 @@ By crafting file locations and namespaces many php scrips can be combined
 ## Credits:
 
 * [Bootstrap](https://getbootstrap.com)
-* [https://seldaek.github.io/monolog/](Monolog)
-* [https://github.com/matthiasmullie](Matthias Mullie minify and scrapbook)
-* [https://github.com/symfony/mailer]Symfony Mailer
+* [Monolog](https://seldaek.github.io/monolog/)
+* [Matthias Mullie minify and scrapbook](https://github.com/matthiasmullie)
+* [Symfony Mailer](https://github.com/symfony/mailer)
