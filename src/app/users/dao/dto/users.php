@@ -17,23 +17,17 @@ class users extends dto {
 
 	public string $name = '';
 
-	public bool $admin = false;
-
-	public bool $active = true;
-
 	public string $email = '';
 
 	public string $mobile = '';
 
-	public string $group = '';
+	public string $password = '';
 
-	public string $birthdate = '';
+	public bool $admin = false;
 
-	public string $start_date = '';
+	public bool $active = false;
 
-	function __construct($row = null) {
+	public string $created = '';
 
-		$this->start_date = date('Y-m-d');
-		parent::__construct($row);
-	}
+	public string $updated = '';
 }

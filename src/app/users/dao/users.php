@@ -16,10 +16,17 @@ class users extends dao {
   protected $_db_name = 'users';
   protected $template = __NAMESPACE__ . '\dto\users';
 
-  public function getMatrix() : array {
+  public function getMatrix(): array {
 
-    $sql = 'SELECT * FROM `users`';
-    if ( $res = $this->Result($sql)) return $this->dtoSet($res);
+    $sql = 'SELECT
+      `id`,
+      `name`,
+      `email`,
+      `mobile`,
+      `admin`,
+      `active`
+    FROM `users`';
+    if ($res = $this->Result($sql)) return $this->dtoSet($res);
     return [];
   }
 

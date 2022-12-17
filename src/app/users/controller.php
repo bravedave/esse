@@ -87,9 +87,17 @@ class controller extends \controller {
     } elseif ('users-save' == $action) {
 
       $a = [
-        'description' => (string)request::post('description'),
-        'complete' => (int)request::post('complete')
+        'name' => (string)request::post('name'),
+        'email' => (string)request::post('email'),
+        'mobile' => (string)request::post('mobile'),
+        'admin' => (int)request::post('admin'),
+        'active' => (int)request::post('active')
       ];
+
+      if ($password = (string)request::post('password')) {
+        $a['password'] = password_hash($password, PASSWORD_DEFAULT);
+
+      }
 
       $dao = new dao\users;
       if ($id = (int)request::post('id')) {
@@ -110,7 +118,7 @@ class controller extends \controller {
   public function edit($id = 0) {
 
     $this->data = (object)[
-      'title' => $this->title = config::label,
+      'title' => $this->title = config::label_add,
       'dto' => new dao\dto\users
     ];
 
@@ -118,7 +126,7 @@ class controller extends \controller {
 
       $this->data->dto = (new dao\users)
         ->getByID($id);
-      $this->data->title .= ' edit';
+      $this->data->title = config::label_edit;
     }
 
     $this->load('edit');

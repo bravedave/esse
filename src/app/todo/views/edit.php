@@ -63,33 +63,12 @@ extract((array)$this->data);  ?>
       const form = $('#<?= $_form ?>');
       const modal = $('#<?= $_modal ?>');
 
-      const serialize = data => {
-
-        let obj = {};
-        for (let [key, value] of data) {
-
-          if (obj[key] !== undefined) {
-
-            if (!Array.isArray(obj[key])) obj[key] = [obj[key]];
-            obj[key].push(value);
-          } else {
-
-            obj[key] = value;
-          }
-        }
-        return obj;
-      };
-
       modal.on('shown.bs.modal', event => {
 
         form.on('submit', function(e) {
 
-          let _data = serialize(new FormData(this));
-
-          let url = new URL(window.location.href);
-          url.pathname = '<?= $this->route ?>';
-
-          $.post(url, _data)
+          let _data = _.serialize(new FormData(this));
+          $.post(_.url('<?= $this->route ?>'), _data)
             .then(d => {
 
               if ('ack' == d.response) {

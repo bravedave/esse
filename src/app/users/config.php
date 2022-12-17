@@ -14,6 +14,8 @@ class config extends \config {  // noting: config extends global config classes
   const users_db_version = 1;
 
   const label = 'Users';  // general label for application
+  const label_add = 'add user';
+  const label_edit = 'edit user';
 
   static function users_checkdatabase() {
     $dao = new dao\dbinfo;

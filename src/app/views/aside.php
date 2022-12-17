@@ -21,6 +21,9 @@ use strings;
     <a class="nav-link" href="<?= strings::url('todo') ?>">todo</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="<?= strings::url($this->route . '/goodbye') ?>">Goodbye</a>
+    <a class="nav-link" href="<?= strings::url('users') ?>">users</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="<?= strings::url($this->route . '/goodbye') ?>">goodbye</a>
   </li>
 </ul>

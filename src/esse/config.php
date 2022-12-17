@@ -22,6 +22,7 @@ abstract class config {
     __DIR__ . '/js/_esse_.get.js',
     __DIR__ . '/js/_esse_.growl.js',
     __DIR__ . '/js/_esse_.randomString.js',
+    __DIR__ . '/js/_esse_.serialize.js',
     __DIR__ . '/js/_esse_.url.js',
   ];
 
