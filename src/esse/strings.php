@@ -20,6 +20,11 @@ abstract class strings {
     return substr_compare($string, $test, $strlen - $testlen, $testlen, TRUE) === 0;
   }
 
+  static public function isEmail( string $email) : bool {
+
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+  }
+
   static public function rand(string $prefix = 'uid_'): string {
 
     return $prefix . bin2hex(random_bytes(11));

@@ -39,6 +39,9 @@
     "bootstrap": [
       "bash src/esse/resource/dvc-sass-bootstrap.sh"
     ],
+    "post-update-cmd": [
+      "bash src/esse/resource/dvc-sass-bootstrap.sh"
+    ],
     "start": "php -S localhost:8080 www/_mvp.php"
   }
 }

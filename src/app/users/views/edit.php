@@ -111,26 +111,20 @@ extract((array)$this->data);  ?>
       form
       $('#<?= $_form ?>')
         .on('submit', function(e) {
-          try {
+          let _data = _.serialize(new FormData(this));
+          $.post(_.url('<?= $this->route ?>'), _data)
+            .then(d => {
 
-            let _data = _.serialize(new FormData(this));
-            $.post(_.url('<?= $this->route ?>'), _data)
-              .then(d => {
+              if ('ack' == d.response) {
 
-                if ('ack' == d.response) {
+                modal
+                  .trigger('success')
+                  .modal('hide');
+              } else {
 
-                  modal
-                    .trigger('success')
-                    .modal('hide');
-                } else {
-
-                  _.growl(d);
-                }
-              });
-          } catch (error) {
-
-            console.error(error);
-          }
+                _.growl(d);
+              }
+            });
 
           // console.table( _data);
 

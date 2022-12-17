@@ -34,7 +34,7 @@ class controller extends \controller {
     parent::before();
   }
 
-  protected function postHandler() {
+  protected function postHandler() : void {
 
     $action = request::post('action');
     if ('get-by-id' == $action) {

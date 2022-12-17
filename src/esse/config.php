@@ -17,6 +17,9 @@ use bravedave\esse\Exceptions\{
 
 abstract class config {
 
+  const label = '_esse_';
+  const label_logon = 'logon';
+
   const libfiles = [
     __DIR__ . '/js/_esse_.js',
     __DIR__ . '/js/_esse_.get.js',

@@ -16,6 +16,15 @@ namespace bravedave\esse;
 class controller {
 
   protected array $paths = [];
+
+  /**
+   * by default, all controllers require validation
+   * won't be active if authentitaction is not turned on
+   *
+   * @var bool $requireValidation
+   */
+  protected bool $requireValidation = true;
+
   protected array $viewPath = [];
 
   protected string $title = __CLASS__;
@@ -30,7 +39,7 @@ class controller {
   protected function before(): void {
   }
 
-  protected function postHandler() {
+  protected function postHandler() : void {
 
     $action = request::post('action');
     json::nak($action);

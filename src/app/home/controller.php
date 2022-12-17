@@ -32,7 +32,7 @@ class controller extends \controller {
     parent::before();
   }
 
-  public function goodbye() {
+  public function goodbye(): void {
 
     $this->title = 'Goodbye !';
 
