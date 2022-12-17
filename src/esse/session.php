@@ -25,7 +25,7 @@ class session {
 		if (!is_null($this->domain))
 			$CookieParams['domain'] = $this->domain;
 
-		$CookieParams['secure'] = !(Request::get()->ServerIsLocal() || Request::get()->ClientIsLocal());
+		$CookieParams['secure'] = !(request::server_isLocal() || request::client_isLocal());
 
 		if ((float)phpversion() < 7.3) {
 
