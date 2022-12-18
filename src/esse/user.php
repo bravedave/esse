@@ -21,8 +21,15 @@ class user {
     return true;  // authentication is successful, user is allowed access
   }
 
+  public static function getID(): int {
+
+    return (int)session::get('user_id');
+    return 0;
+  }
+
   public static function setID(int $id): void {
 
+    session::set('user_id', $id);
     logger::debug(sprintf('<%s> %s', $id, __METHOD__));
   }
 

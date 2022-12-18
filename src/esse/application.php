@@ -10,7 +10,8 @@
 
 namespace bravedave\esse;
 
-use config;
+use config, currentUser;
+// use controller;
 
 /**
  * the application class
@@ -41,6 +42,7 @@ class application {
     ]);
 
     if (!class_exists($controller)) {
+
       // esse controller
       $controller = implode('\\', [
         __NAMESPACE__,
@@ -53,6 +55,22 @@ class application {
 
       $this->route = request::controller();
       $ctrl = new $controller($this->paths);
+
+      if (currentUser::isValid()) {
+
+        logger::debug(sprintf('<valid user : %s> %s', currentUser::id(), __METHOD__));
+      } else {
+
+        // they are not valid,
+        // if the controller requres authentication bump them to logon
+        if ($ctrl->requireValidation) {
+
+          $ctrl = new controller\logon($this->paths);
+          $ctrl->index();
+          logger::info(sprintf('<invalid user> %s', __METHOD__));
+          return; // finito
+        }
+      }
 
       if (method_exists($ctrl, $method = request::method())) {
 

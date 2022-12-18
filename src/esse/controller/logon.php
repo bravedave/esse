@@ -11,7 +11,10 @@
 namespace bravedave\esse\controller;
 
 use bravedave\esse\json;
+use bravedave\esse\page;
 use bravedave\esse\request;
+use bravedave\esse\response;
+use bravedave\esse\session;
 use config, controller, user;
 
 class logon extends controller {
@@ -25,7 +28,9 @@ class logon extends controller {
 
     $this->title = config::label_logon;
 
-    $this->load('logon');
+    (page::bootstrap())
+      ->head($this->title)
+      ->body()->then(fn () => $this->load('logon'));
   }
 
   protected function postHandler(): void {
@@ -62,5 +67,11 @@ class logon extends controller {
 
       parent::postHandler();
     }
+  }
+
+  public function logoff() {
+
+    session::destroy();
+    response::redirect();
   }
 }

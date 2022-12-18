@@ -98,7 +98,7 @@ abstract class response {
     header("Content-type: image/jpeg");
   }
 
-  static function html_headers(string $charset = ''): void {
+  public static function html_headers(string $charset = ''): void {
 
     if (!$charset) $charset = 'UTF-8';
 
@@ -108,7 +108,7 @@ abstract class response {
     header(sprintf("Content-type: text/html; charset=%s", $charset));
   }
 
-  static function pdf_headers(string $filename = '', int $modifyTime = 0): void {
+  public static function pdf_headers(string $filename = '', int $modifyTime = 0): void {
 
     self::_common_headers($modifyTime);
     header('Content-type: application/pdf');
@@ -117,12 +117,58 @@ abstract class response {
     header(sprintf('Content-Disposition: inline; filename="%s"', $filename));
   }
 
-  static function png_headers(int $modifyTime = 0, int $expires = 0): void {
+  public static function png_headers(int $modifyTime = 0, int $expires = 0): void {
 
     if (!$expires) $expires = config::$IMG_EXPIRE_TIME;
 
     self::_common_headers($modifyTime, $expires);
     header("Content-type: image/png");
+  }
+
+  public static function redirect(string $url = '', string $message = "", bool $auto = true): void {
+
+    if (!$url) {
+
+      $url = strings::url();  // default
+    } elseif (!(preg_match('@^(http|//)@i', (string)$url))) {
+
+      if ('/' != $url) $url = strings::url($url);
+    }
+
+    if ($message == "") {
+
+      header(sprintf('location: %s', $url));
+      exit;
+    }
+
+    $p = page::bootstrap();
+    if (useragent::isMobileDevice()) $p->meta[] = '<meta name="viewport" content="initial-scale=1" />';
+
+    if ($auto) {
+      $p->meta[] = sprintf(
+        '<meta http-equiv="refresh" content="1; url=%s" />',
+        $url
+      );
+    }
+
+    $p
+      ->head($message)
+      ->body()->then(
+        fn () =>      printf(
+          '<div style="margin: 50px auto 10px auto; padding: 10px; border: 1px solid silver; max-width: 600px;">
+          <p style="margin-top: 15px; margin-bottom: 15px;">%s</p>
+
+          <div style="text-align: right; padding-right: 20px;">
+            <a style="text-decoration: none; font-style: italic;" href="%s">%s .... .</a>
+          </div>
+        </div>',
+          $message,
+          $url,
+          ($auto ? 'redirecting' : 'continue')
+        )
+      );
+
+    exit;  // don't run anything else
   }
 
   public static function serve($path) {

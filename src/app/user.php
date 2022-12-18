@@ -10,13 +10,11 @@
 
 use bravedave\esse\logger;
 
-use users\dao\users;
-
 class user extends bravedave\esse\user {
 
   public static function authenticate(string $email, string $password): ?self {
 
-    $dao = new users;
+    $dao = new users\dao\users;
     if ($dto = $dao->getUserByEmail($email)) {
 
       if (password_verify($password, $dto->password)) {
@@ -31,6 +29,17 @@ class user extends bravedave\esse\user {
     } else {
 
       return null;
+    }
+
+    return null;
+  }
+
+  public static function getCurrentUser(): ?users\dao\dto\users {
+
+    if ($id = self::getID()) {
+
+      $dao = new users\dao\users;
+      if ($dto = $dao->getByID($id)) return $dto;
     }
 
     return null;

@@ -94,7 +94,7 @@ class session {
 		return (self::$instance->_get($var, $default));
 	}
 
-	static function set($var, $val = null): void {
+	static function set(string $var, ?string $val = null): void {
 
 		self::edit();
 		if (is_null($val)) {

@@ -22,7 +22,7 @@ use strings; ?>
     <a class="nav-link" href="<?= strings::url('users') ?>">users</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="<?= strings::url($this->route . '/goodbye') ?>">goodbye</a>
+    <a class="nav-link" href="<?= strings::url('logon/logoff') ?>">logoff</a>
   </li>
   <li class="nav-item">
     <a class="nav-link js-logon" href="#">logon</a>
