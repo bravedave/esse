@@ -25,9 +25,8 @@ use strings;  ?>
         </li>
       </ul>
 
-      <form class="d-flex flex-fill mx-md-2" role="search">
+      <form class="d-flex flex-fill mx-md-4" role="search">
         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-secondary" type="submit">Search</button>
       </form>
     </div>
 
@@ -35,7 +34,7 @@ use strings;  ?>
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="#"><?= $this->title ?? 'Navbar' ?></a>
+    <a class="navbar-brand" href="<?= strings::url() ?>"><?= $this->title ?? 'Navbar' ?></a>
 
   </div>
 </nav>

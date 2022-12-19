@@ -10,19 +10,25 @@
 
 namespace bravedave\esse\controller;
 
-use bravedave\esse\json;
-use bravedave\esse\page;
-use bravedave\esse\request;
-use bravedave\esse\response;
-use bravedave\esse\session;
+use bravedave\esse\{
+  json,
+  page,
+  request, response,
+  session
+};
 use config, controller, user;
 
+/**
+ * logon controller
+ *
+ *  [WARNING] this controller does not require Authentication
+ */
 class logon extends controller {
   /**
-   * logon controller doesn't require validation
-   * @var bool $requireValidation
+   * logon controller doesn't require Authentication
+   * @var bool $requireAuthentication
    */
-  protected bool $requireValidation = false;
+  protected bool $requireAuthentication = false;
 
   protected function _index(): void {
 
@@ -30,7 +36,7 @@ class logon extends controller {
 
     (page::bootstrap())
       ->head($this->title)
-      ->body()->then(fn () => $this->load('logon'));
+      ->main()->then(fn () => $this->load('logon'));
   }
 
   protected function postHandler(): void {

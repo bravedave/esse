@@ -16,9 +16,15 @@ use bravedave\esse\response;
 use config, controller;
 
 /**
- * a default home controller
+ * assets controller
+ *
+ *  [WARNING] this controller does not require Authentication
  */
 class assets extends controller {
+  /**
+   * @var bool $requireAuthentication
+   */
+  protected bool $requireAuthentication = false;
 
   const vendor = __DIR__ . '/../../../vendor';
 
@@ -27,12 +33,13 @@ class assets extends controller {
     if ('bootstrap.js' == $lib) {
 
       $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js';
+      $path = __DIR__ . '/../js/bootstrap.bundle.min.js';
       response::serve($path);
-    } elseif ('bootstrap.bundle.min.js.map' == $lib) {
+    // } elseif ('bootstrap.bundle.min.js.map' == $lib) {
 
-      $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js.map';
-      response::json_headers(filemtime($path));
-      print file_get_contents($path);
+    //   $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js.map';
+    //   response::json_headers(filemtime($path));
+    //   print file_get_contents($path);
     } elseif ('bootstrap.css' == $lib) {
 
       $path = __DIR__ . '/../css/bootstrap.min.css';

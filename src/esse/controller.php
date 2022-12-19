@@ -21,9 +21,9 @@ class controller {
    * by default, all controllers require validation
    * won't be active if authentitaction is not turned on
    *
-   * @var bool $requireValidation
+   * @var bool $requireAuthentication
    */
-  protected bool $requireValidation = true;
+  protected bool $requireAuthentication = true;
 
   protected array $viewPath = [];
 
@@ -39,7 +39,32 @@ class controller {
   protected function before(): void {
   }
 
-  protected function postHandler() : void {
+  protected function load(string $view): void {
+
+    if ($path = $this->getView($view)) {
+
+      require $path;
+    } else {
+
+      printf('view %s not found', $view);
+    }
+  }
+
+  protected function getView(string $view): string {
+
+    foreach ($this->viewPath as $path) {
+
+      if (file_exists($p = sprintf('%s/%s.php', $path, $view))) return $p;
+    }
+
+    foreach ($this->paths as $path) {
+
+      if (file_exists($p = sprintf('%s/views/%s.php', $path, $view))) return $p;
+    }
+    return '';
+  }
+
+  protected function postHandler(): void {
 
     $action = request::post('action');
     json::nak($action);
@@ -54,34 +79,14 @@ class controller {
     $this->before();
   }
 
-  public function load(string $view): void {
-
-    if ($path = $this->getView($view)) {
-
-      require $path;
-    } else {
-
-      printf('view %s not found', $view);
-    }
-  }
-
-  public function getView(string $view): string {
-
-    foreach ($this->viewPath as $path) {
-
-      if (file_exists($p = sprintf('%s/%s.php', $path, $view))) return $p;
-    }
-
-    foreach ($this->paths as $path) {
-
-      if (file_exists($p = sprintf('%s/views/%s.php', $path, $view))) return $p;
-    }
-    return '';
-  }
-
   public function index(): void {
     request::isPost() ?
       $this->postHandler() :
       $this->_index();
+  }
+
+  public function requiresAuthentication(): bool {
+
+    return $this->requireAuthentication;
   }
 }

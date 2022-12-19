@@ -33,12 +33,13 @@ abstract class config {
 
   static protected ?string $_dataPath = null;
 
-  static $CONTENT_SECURITY_ENABLED = true;
+  static bool $AUTHENTICATION = true;
+  static bool $CONTENT_SECURITY_ENABLED = true;
 
-  static $DATE_FORMAT = 'Y-m-d';
-  static $DATE_FORMAT_LONG = 'D M d Y';
-  static $DATETIME_FORMAT = 'Y-m-d g:ia';
-  static $DATETIME_FORMAT_LONG = 'D M d Y g:ia';
+  static string $DATE_FORMAT = 'Y-m-d';
+  static string $DATE_FORMAT_LONG = 'D M d Y';
+  static string $DATETIME_FORMAT = 'Y-m-d g:ia';
+  static string $DATETIME_FORMAT_LONG = 'D M d Y g:ia';
 
   /**
    *	Caching using APCu, Interfaced through https://www.scrapbook.cash/
@@ -94,6 +95,7 @@ abstract class config {
   static string $UMASK = '0022';
 
   static public function checkDBconfigured(): bool {
+
     if (self::$DB_TYPE == 'mysql' || self::$DB_TYPE == 'sqlite' || self::$DB_TYPE == 'disabled')
       return true;
 
@@ -212,7 +214,7 @@ abstract class config {
 
     return implode(DIRECTORY_SEPARATOR, [
       self::dataPath(),
-      'defaults.json'
+      'esse-defaults.json'
     ]);
   }
 
@@ -225,6 +227,7 @@ abstract class config {
     $path = self::defaultsPath();
     if (file_exists($path)) {
       $_a = [
+        'authentication' => self::$AUTHENTICATION,
         'db_type' => self::$DB_TYPE,
         'db_cache' => self::$DB_CACHE,
         'db_cache_debug' => self::$DB_CACHE_DEBUG,
@@ -247,6 +250,7 @@ abstract class config {
 
       $a = (object)array_merge($_a, (array)json_decode(file_get_contents($path)));
 
+      self::$AUTHENTICATION = $a->authentication;
       self::$DB_TYPE = $a->db_type;
       self::$DB_CACHE = $a->db_cache;
       self::$DB_CACHE_DEBUG = $a->db_cache_debug;
@@ -274,13 +278,14 @@ abstract class config {
     } else {
       $path = implode(DIRECTORY_SEPARATOR, [
         self::dataPath(),
-        'defaults-sample.json'
+        'esse-defaults-sample.json'
 
       ]);
 
       if (!file_exists($path)) {
 
         $a = [
+          'authentication' => true,
           'db_type' => 'sqlite',
           'db_cache' => self::$DB_CACHE,
           'db_cache_debug' => self::$DB_CACHE_DEBUG,

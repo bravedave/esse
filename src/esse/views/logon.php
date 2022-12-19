@@ -7,77 +7,89 @@
  * MIT License
  *
 */  ?>
+<style>
+  html,
+  body {
+    height: 100%;
+  }
 
-<form id="<?= $_form = strings::rand() ?>" autocomplete="off">
+  body {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+  }
 
-  <input type="hidden" name="action" value="-system-logon-">
+  .form-signin {
+    max-width: 330px;
+    padding: 15px;
+  }
 
-  <div class="modal fade" tabindex="-1" role="dialog" id="<?= $_modal = strings::rand() ?>" aria-labelledby="<?= $_modal ?>Label" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-      <div class="modal-content">
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
 
-        <div class="modal-header <?= theme::modalHeader() ?>">
+  .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 
-          <h5 class="modal-title" id="<?= $_modal ?>Label"><?= $this->title ?></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+</style>
 
-        <div class="modal-body">
+<div class="form-signin w-100 m-auto">
 
-          <div class="row">
+  <form id="<?= $_form = strings::rand() ?>" autocomplete="off">
 
-            <div class="col mb-2">
+    <input type="hidden" name="action" value="-system-logon-">
 
-              <input type="text" name="u" class="form-control" placeholder="username or email" autocomplete="username" required>
-            </div>
-          </div>
+    <div class="form-floating">
 
-          <div class="row">
-            <div class="col mb-2">
-
-              <input type="password" name="p" class="form-control" placeholder="password" autocomplete="current-password" required>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-
-          <button type="submit" class="btn btn-primary">logon</button>
-        </div>
-      </div>
+      <input type="email" name="u" class="form-control" id="<?= $_uid = strings::rand() ?>" placeholder="username or email" autocomplete="username" required>
+      <label for="<?= $_uid ?>">email address</label>
     </div>
-  </div>
-  <script>
-    (_ => $('#<?= $_modal ?>').on('shown.bs.modal', () => {
-      const form = $('#<?= $_form ?>')
-      const modal = $('#<?= $_modal ?>')
 
-      form
-        .on('submit', function(e) {
+    <div class="form-floating">
 
-          let _data = _.serialize(new FormData(this));
-          $.post(_.url('<?= $this->route ?>'), _data)
-            .then(d => {
+      <input type="password" name="p" class="form-control" id="<?= $_uid = strings::rand() ?>" placeholder="password" autocomplete="current-password" required>
+      <label for="<?= $_uid ?>">password</label>
+    </div>
 
-              if ('ack' == d.response) {
+    <button type="submit" class="w-100 btn btn-lg btn-primary">logon</button>
 
-                modal.trigger('success');
-                window.location.reload();
-              } else {
+    <script>
+      (_ => {
+        const form = $('#<?= $_form ?>')
 
-                form.find('.modal-body')
-                  .append($('<div class="alert alert-danger">failed</div>'));
+        form
+          .on('submit', function(e) {
 
-                _.growl(d);
-              }
-            });
+            let _data = _.serialize(new FormData(this));
+            $.post(_.url('<?= $this->route ?>'), _data)
+              .then(d => {
 
-          // console.table( _data);
+                if ('ack' == d.response) {
 
-          return false;
-        });
+                  window.location.reload();
+                } else {
 
-      form.find('input[name="u"]').focus();
-    }))(_esse_);
-  </script>
-</form>
+                  form.append($('<div class="alert alert-danger">failed</div>'));
+
+                  _.growl(d);
+                }
+              });
+
+            // console.table( _data);
+
+            return false;
+          });
+      })(_esse_);
+    </script>
+  </form>
+</div>

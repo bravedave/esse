@@ -21,26 +21,30 @@
     }
   ],
   "minimum-stability": "dev",
+  "prefer-stable" : true,
   "require": {
     "ext-fileinfo": "*",
     "ext-posix": "*",
     "monolog/monolog": "2.x-dev",
-    "symfony/mailer": "6.0.x-dev",
-    "matthiasmullie/minify": "dev-master",
-    "twbs/bootstrap-icons": "dev-main",
-    "twbs/bootstrap": "dev-main"
+    "symfony/mailer": "*",
+    "matthiasmullie/minify": "*",
+    "twbs/bootstrap-icons": "dev-main"
   },
   "require-dev": {
     "ext-apcu": "*",
+    "ext-session": "*",
     "ext-sqlite3": "*",
-    "matthiasmullie/scrapbook": "*"
+    "matthiasmullie/scrapbook": "*",
+    "twbs/bootstrap": "*"
   },
   "scripts": {
     "bootstrap": [
-      "bash src/esse/resource/dvc-sass-bootstrap.sh"
+      "bash src/esse/resource/dvc-sass-bootstrap.sh",
+      "bravedave\\esse\\resource\\importJS::bootstrap"
     ],
     "post-update-cmd": [
-      "bash src/esse/resource/dvc-sass-bootstrap.sh"
+      "bash src/esse/resource/dvc-sass-bootstrap.sh",
+      "bravedave\\esse\\resource\\importJS::bootstrap"
     ],
     "start": "php -S localhost:8080 www/_mvp.php"
   }
