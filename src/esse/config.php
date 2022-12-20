@@ -20,7 +20,11 @@ abstract class config {
   const label = '_esse_';
   const label_logon = 'logon';
 
-  const libfiles = [
+  const cssfiles = [
+    __DIR__ . '/css/_esse_.css',
+  ];
+
+  const jsfiles = [
     __DIR__ . '/js/_esse_.js',
     __DIR__ . '/js/_esse_.get.js',
     __DIR__ . '/js/_esse_.growl.js',

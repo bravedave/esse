@@ -33,7 +33,7 @@ use strings;  ?>
       ul.html('');
       $.each(data, (i, dto) => {
 
-        let li = $(`<li style="cursor: pointer">
+        let li = $(`<li>
             <div class="form-check">
               <input type="checkbox" class="form-check-input" ${dto.complete ? 'checked' : '' }>
               <label class="form-check-label">${dto.description}</label>
@@ -50,15 +50,32 @@ use strings;  ?>
           $(this).trigger('toggle');
         });
 
-        li.find('label').on('click', function(e) {
+        li.find('label')
+          .addClass('pointer')
+          .on('click', function(e) {
 
+            e.stopPropagation();
+            e.preventDefault();
+
+            $(this).trigger('edit');
+          });
+
+      });
+
+      let btn = $(`<a class="nav-link js-add-todo" href="#"><i class="bi bi-plus-circle"></i> new</a>`)
+        .on('click', function(e) {
           e.stopPropagation();
           e.preventDefault();
 
-          $(this).trigger('edit');
+          _.get.modal(_.url('<?= $this->route ?>/edit'))
+            .then(modal => {
+              modal.on('success', (e, data) => $('#<?= $_uidMatrix ?>').trigger('refresh'))
+            });
         });
 
-      });
+      $(`<li class="mt-2"></li>`)
+        .append(btn)
+        .appendTo(ul);
     };
 
     const refresh = function(e) {
@@ -124,7 +141,6 @@ use strings;  ?>
           });
       });
 
-    $(document).on('todo-add-new', e => $('#<?= $_uidMatrix ?>').trigger('refresh'));
     $(document).ready(() => $('#<?= $_uidMatrix ?>').trigger('refresh'));
 
   })(_esse_);

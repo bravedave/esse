@@ -43,6 +43,7 @@ class page {
     $p->scripts[] = sprintf('<script src="%s"></script>', strings::url('assets/js'));
     $p->css[] = sprintf('<link href="%s" rel="stylesheet">', strings::url('assets/bootstrap/bootstrap.css'));
     $p->css[] = sprintf('<link rel="stylesheet" href="%s">', strings::url('assets/bootstrap/bootstrap-icons.css'));
+    $p->css[] = sprintf('<link rel="stylesheet" href="%s">', strings::url('assets/css/esse.css'));
     // $p->late[] = '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>';
     $p->late[] = sprintf('<script src="%s"></script>', strings::url('assets/bootstrap/bootstrap.js'));
 

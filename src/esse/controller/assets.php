@@ -10,6 +10,7 @@
 
 namespace bravedave\esse\controller;
 
+use bravedave\esse\cssmin;
 use bravedave\esse\jslib;
 use bravedave\esse\logger;
 use bravedave\esse\response;
@@ -35,11 +36,11 @@ class assets extends controller {
       $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js';
       $path = __DIR__ . '/../js/bootstrap.bundle.min.js';
       response::serve($path);
-    // } elseif ('bootstrap.bundle.min.js.map' == $lib) {
+      // } elseif ('bootstrap.bundle.min.js.map' == $lib) {
 
-    //   $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js.map';
-    //   response::json_headers(filemtime($path));
-    //   print file_get_contents($path);
+      //   $path = self::vendor . '/twbs/bootstrap/dist/js/bootstrap.bundle.min.js.map';
+      //   response::json_headers(filemtime($path));
+      //   print file_get_contents($path);
     } elseif ('bootstrap.css' == $lib) {
 
       $path = __DIR__ . '/../css/bootstrap.min.css';
@@ -81,6 +82,22 @@ class assets extends controller {
     }
   }
 
+  public function css($lib = 'esse.css'): void {
+
+    if ('esse.css' == $lib) {
+
+      cssmin::viewcss([
+        'debug' => false,
+        'libName' => 'esseCSS',
+        'cssFiles' => config::cssfiles,
+        'libFile' => config::tempdir()  . '_home_default.css'
+      ]);
+    } else {
+
+      logger::info(sprintf('<%s> %s', $lib, __METHOD__));
+    }
+  }
+
   public function jquery() {
 
     response::serve(__DIR__ . '/../js/jquery-3.6.1.min.js');
@@ -92,8 +109,8 @@ class assets extends controller {
 
       jslib::viewjs([
         'debug' => false,
-        'libName' => 'esse',
-        'jsFiles' => config::libfiles,
+        'libName' => 'esseJS',
+        'jsFiles' => config::jsfiles,
         'libFile' => config::tempdir() . '_esse_.js'
       ]);
     } else {

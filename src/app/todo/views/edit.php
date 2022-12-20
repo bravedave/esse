@@ -67,27 +67,32 @@ extract((array)$this->data);  ?>
 
         form.on('submit', function(e) {
 
-          let _data = _.serialize(new FormData(this));
-          $.post(_.url('<?= $this->route ?>'), _data)
-            .then(d => {
+          try {
 
-              if ('ack' == d.response) {
+            let _data = _.serialize(new FormData(this));
+            $.post(_.url('<?= $this->route ?>'), _data)
+              .then(d => {
 
-                modal
-                  .trigger('success')
-                  .modal('hide');
-              } else {
+                if ('ack' == d.response) {
 
-                _.growl(d);
-              }
-            });
+                  modal
+                    .trigger('success')
+                    .modal('hide');
+                } else {
 
-          // console.table(_data);
+                  _.growl(d);
+                }
+              });
 
-          return false;
+            // console.table(_data);
+
+            return false;
+          } catch (error) {
+
+            console.error(error);
+          }
         });
       });
-
-    })();
+    })(_esse_);
   </script>
 </form>

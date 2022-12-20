@@ -34,7 +34,7 @@ use strings;  ?>
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="<?= strings::url() ?>"><?= $this->title ?? 'Navbar' ?></a>
+    <a class="navbar-brand" href="<?= strings::url($this->route) ?>"><?= $this->title ?? 'Navbar' ?></a>
 
   </div>
 </nav>

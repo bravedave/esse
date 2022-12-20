@@ -11,6 +11,7 @@
 namespace todo;
 
 use bravedave\esse\json;
+use bravedave\esse\logger;
 use bravedave\esse\page;
 use bravedave\esse\request;
 
@@ -34,7 +35,7 @@ class controller extends \controller {
     parent::before();
   }
 
-  protected function postHandler() : void {
+  protected function postHandler(): void {
 
     $action = request::post('action');
     if ('get-by-id' == $action) {
@@ -85,6 +86,8 @@ class controller extends \controller {
       Json::ack($action)
         ->add('data', $dao->getMatrix());
     } elseif ('todo-save' == $action) {
+
+      logger::debug(sprintf('<%s> %s', $action, __METHOD__));
 
       $a = [
         'description' => (string)request::post('description'),

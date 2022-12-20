@@ -69,7 +69,7 @@ use strings;
 
       $.each(data, (i, dto) => {
 
-        $(`<tr>
+        $(`<tr class="pointer">
           <td class="text-center js-line-number small"></td>
           <td>${dto.name}</td>
           <td>${dto.email}</td>
