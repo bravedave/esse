@@ -19,7 +19,7 @@ class user extends bravedave\esse\user {
 
       if (password_verify($password, $dto->password)) {
 
-        logger::info(sprintf('<%s> %s', $email, __METHOD__));
+        logger::info(sprintf('<%s logged on> %s', $email, __METHOD__));
         self::setID($dto->id);
         return new self;
       } else {

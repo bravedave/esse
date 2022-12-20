@@ -34,7 +34,7 @@ class controller extends \controller {
     parent::before();
   }
 
-  protected function postHandler() : void {
+  protected function postHandler(): void {
 
     $action = request::post('action');
     if ('get-by-id' == $action) {
@@ -55,8 +55,7 @@ class controller extends \controller {
        */
       if ($id = (int)request::post('id')) {
 
-        $dao = new dao\users;
-        if ($dto = $dao->getByID($id)) {
+        if ($dto = (new dao\users)->getByID($id)) {
 
           Json::ack($action)
             ->add('data', $dto);
@@ -81,9 +80,8 @@ class controller extends \controller {
             });
         })(_esse_);
        */
-      $dao = new dao\users;
       Json::ack($action)
-        ->add('data', $dao->getMatrix());
+        ->add('data', (new dao\users)->getMatrix());
     } elseif ('users-save' == $action) {
 
       $a = [
@@ -95,17 +93,16 @@ class controller extends \controller {
       ];
 
       if ($password = (string)request::post('password')) {
-        $a['password'] = password_hash($password, PASSWORD_DEFAULT);
 
+        $a['password'] = password_hash($password, PASSWORD_DEFAULT);
       }
 
-      $dao = new dao\users;
       if ($id = (int)request::post('id')) {
 
-        $dao->UpdateByID($a, $id);
+        (new dao\users)->UpdateByID($a, $id);
       } else {
 
-        $dao->Insert($a);
+        (new dao\users)->Insert($a);
       }
 
       json::ack($action);

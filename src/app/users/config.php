@@ -18,6 +18,7 @@ class config extends \config {  // noting: config extends global config classes
   const label_edit = 'edit user';
 
   static function users_checkdatabase() {
+
     $dao = new dao\dbinfo;
     // $dao->debug = true;
     $dao->checkVersion('users', self::users_db_version);

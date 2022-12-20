@@ -56,8 +56,7 @@ class controller extends \controller {
        */
       if ($id = (int)request::post('id')) {
 
-        $dao = new dao\todo;
-        if ($dto = $dao->getByID($id)) {
+        if ($dto = (new dao\todo)->getByID($id)) {
 
           Json::ack($action)
             ->add('data', $dto);
@@ -82,25 +81,21 @@ class controller extends \controller {
             });
         })(_esse_);
        */
-      $dao = new dao\todo;
       Json::ack($action)
-        ->add('data', $dao->getMatrix());
+        ->add('data', (new dao\todo)->getMatrix());
     } elseif ('todo-save' == $action) {
-
-      logger::debug(sprintf('<%s> %s', $action, __METHOD__));
 
       $a = [
         'description' => (string)request::post('description'),
         'complete' => (int)request::post('complete')
       ];
 
-      $dao = new dao\todo;
       if ($id = (int)request::post('id')) {
 
-        $dao->UpdateByID($a, $id);
+        (new dao\todo)->UpdateByID($a, $id);
       } else {
 
-        $dao->Insert($a);
+        (new dao\todo)->Insert($a);
       }
 
       json::ack($action);
