@@ -4,8 +4,8 @@ if [ -x "$(command -v sassc)" ]; then
 
 	if [ -x "$(command -v rsync)" ]; then
     # this will
-    # 1. create a folder bootstrap4,
-    # 2. Sync in bs4 scss
+    # 1. create a folder bootstrap,
+    # 2. Sync in bootstrap scss
     # 3. compile changes
     # 4. create themed bs files
 

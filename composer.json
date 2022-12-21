@@ -27,25 +27,28 @@
     "ext-posix": "*",
     "monolog/monolog": "*",
     "symfony/mailer": "*",
-    "matthiasmullie/minify": "*",
-    "twbs/bootstrap-icons": "*"
+    "matthiasmullie/minify": "*"
   },
   "require-dev": {
     "ext-apcu": "*",
     "ext-session": "*",
     "ext-sqlite3": "*",
     "matthiasmullie/scrapbook": "*",
-    "twbs/bootstrap": "*"
+    "twbs/bootstrap": "*",
+    "twbs/bootstrap-icons": "*"
   },
   "scripts": {
     "bootstrap": [
-      "bash src/esse/resource/dvc-sass-bootstrap.sh",
-      "bravedave\\esse\\resource\\importJS::bootstrap"
+      "bash src/esse/resource/sass-bootstrap.sh",
+      "bravedave\\esse\\resource\\importJS::bootstrap",
+      "bash src/esse/resource/bootstrap-icons.sh"
     ],
     "post-update-cmd": [
-      "bash src/esse/resource/dvc-sass-bootstrap.sh",
-      "bravedave\\esse\\resource\\importJS::bootstrap"
+      "bash src/esse/resource/sass-bootstrap.sh",
+      "bravedave\\esse\\resource\\importJS::bootstrap",
+      "bash src/esse/resource/bootstrap-icons.sh"
     ],
-    "start": "php -S localhost:8080 www/_mvp.php"
+    "start": "php -S localhost:8080 www/_mvp.php",
+    "unittest-sendmail": "unit_test::sendmail"
   }
 }

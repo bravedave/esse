@@ -55,25 +55,25 @@ class assets extends controller {
       response::serve($path);
     } elseif ('bootstrap-icons.css' == $lib) {
 
-      $path = self::vendor . '/twbs/bootstrap-icons/font/bootstrap-icons.css';
+      $path = __DIR__ . '/../css/bootstrap.min.css';
       if (file_exists($path)) {
 
         response::serve($path);
       } else {
 
-        logger::info(sprintf('<%s> %s', $path, __METHOD__));
+        logger::info(sprintf('<not found : %s> %s', $path, __METHOD__));
       }
     } elseif ('fonts' == $lib) {
 
       if ('bootstrap-icons.woff2' == $file || 'bootstrap-icons.woff' == $file) {
 
-        $path = self::vendor . '/twbs/bootstrap-icons/font/fonts/' . $file;
+        $path = __DIR__ . '/../css/fonts/' . $file;
         if (file_exists($path)) {
 
           response::serve($path);
         } else {
 
-          logger::info(sprintf('<%s> %s', $path, __METHOD__));
+          logger::info(sprintf('<not found : %s> %s', $path, __METHOD__));
         }
       }
     } else {
