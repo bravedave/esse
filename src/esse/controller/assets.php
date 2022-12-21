@@ -55,7 +55,7 @@ class assets extends controller {
       response::serve($path);
     } elseif ('bootstrap-icons.css' == $lib) {
 
-      $path = __DIR__ . '/../css/bootstrap.min.css';
+      $path = __DIR__ . '/../css/bootstrap-icons/bootstrap-icons.css';
       if (file_exists($path)) {
 
         response::serve($path);
@@ -67,7 +67,7 @@ class assets extends controller {
 
       if ('bootstrap-icons.woff2' == $file || 'bootstrap-icons.woff' == $file) {
 
-        $path = __DIR__ . '/../css/fonts/' . $file;
+        $path = __DIR__ . '/../css/bootstrap-icons/fonts/' . $file;
         if (file_exists($path)) {
 
           response::serve($path);
