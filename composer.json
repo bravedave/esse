@@ -25,10 +25,10 @@
   "require": {
     "ext-fileinfo": "*",
     "ext-posix": "*",
-    "monolog/monolog": "2.x-dev",
+    "monolog/monolog": "*",
     "symfony/mailer": "*",
     "matthiasmullie/minify": "*",
-    "twbs/bootstrap-icons": "dev-main"
+    "twbs/bootstrap-icons": "*"
   },
   "require-dev": {
     "ext-apcu": "*",
