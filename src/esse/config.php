@@ -115,8 +115,8 @@ abstract class config {
 
     if (\is_null(self::$_dataPath)) {
 
-      $root = sprintf('%s', application::getRootPath());
-      $datapath = sprintf('%s%sdata', application::getRootPath(), DIRECTORY_SEPARATOR);
+      $root = sprintf('%s', dirname(application::getRootPath()));
+      $datapath = sprintf('%s%sdata', $root, DIRECTORY_SEPARATOR);
 
       /**
        * the location of the datapath can be changed by

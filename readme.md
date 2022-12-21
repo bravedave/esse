@@ -8,6 +8,7 @@ This application exploits PSR-4 by crafting file locations and namespaces so tha
 
 * MVC Architecture
 * Supports MariaDB and SQLite
+* All licenses are MIT at the time of writing (Dec. 2022)
 
 ## Credits:
 
@@ -15,3 +16,4 @@ This application exploits PSR-4 by crafting file locations and namespaces so tha
 * [Monolog](https://seldaek.github.io/monolog/)
 * [Matthias Mullie minify and scrapbook](https://github.com/matthiasmullie)
 * [Symfony Mailer](https://github.com/symfony/mailer)
+* and whatever libraries these libraries required
