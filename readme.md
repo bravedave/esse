@@ -8,6 +8,7 @@ This application exploits PSR-4 by crafting file locations and namespaces so tha
 
 * MVC Architecture
 * Supports MariaDB and SQLite
+* Simple Authentication
 * All licenses are MIT at the time of writing (Dec. 2022)
 
 ## Credits:
