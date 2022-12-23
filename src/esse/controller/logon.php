@@ -13,7 +13,8 @@ namespace bravedave\esse\controller;
 use bravedave\esse\{
   json,
   page,
-  request, response,
+  request,
+  response,
   session
 };
 use config, controller, user;
@@ -48,15 +49,9 @@ class logon extends controller {
 
         if ($p = request::post('p')) {
 
-          if ($user = user::authenticate($u, $p)) {
+          if (user::authenticate($u, $p)) {
 
-            if ($user->isValid()) {
-
-              json::ack($action);
-            } else {
-
-              json::nak($action);
-            }
+            json::ack($action);
           } else {
 
             json::nak($action);

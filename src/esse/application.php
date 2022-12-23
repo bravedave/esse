@@ -43,6 +43,12 @@ class application {
 
     if ($this->service) return; // this is being called from the command line
 
+    if ('favicon.ico' == request::controller()) {
+
+      response::serve(__DIR__ . '/resource/favicon.ico');
+      return;
+    }
+
     $controller = implode('\\', [
       request::controller(),
       'controller'
@@ -63,7 +69,7 @@ class application {
       $this->route = request::controller();
       $ctrl = new $controller($this->paths);
 
-      if (!config::$AUTHENTICATION || currentUser::isValid() || !$ctrl->requiresAuthentication()) {
+      if (!config::$AUTHENTICATION || !$ctrl->requiresAuthentication() || currentUser::isValid()) {
 
         // logger::debug(sprintf('<valid user : %s> %s', currentUser::id(), __METHOD__));
         /**
@@ -133,7 +139,7 @@ class application {
         // if the controller requres authentication bump them to logon
         $ctrl = new controller\logon($this->paths);
         $ctrl->index();
-        logger::info(sprintf('<invalid user> %s', __METHOD__));
+        logger::info(sprintf('<invalid user> <%s> %s', $controller, __METHOD__));
         return; // finito
       }
     } else {

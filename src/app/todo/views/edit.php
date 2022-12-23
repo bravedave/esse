@@ -92,6 +92,8 @@ extract((array)$this->data);  ?>
             console.error(error);
           }
         });
+
+        form.find('input[name="description"]').focus();
       });
     })(_esse_);
   </script>

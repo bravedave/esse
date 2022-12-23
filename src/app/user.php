@@ -12,6 +12,12 @@ use bravedave\esse\logger;
 
 class user extends bravedave\esse\user {
 
+  public function isValid(): bool {
+
+    logger::debug(sprintf('<user is allowed access> <%s> %s', get_class($this), __METHOD__));
+    return true;  // authentication is successful, user is allowed access
+  }
+
   public static function authenticate(string $email, string $password): ?self {
 
     $dao = new users\dao\users;

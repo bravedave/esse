@@ -16,15 +16,18 @@ use Monolog\Handler\SymfonyMailerHandler;
 use Monolog\Logger as MonoLog;
 use Monolog\Processor\IntrospectionProcessor;
 
+use config;
+use Monolog\Level;
+
 class logger {
   protected static ?MonoLog $_monolog = null;
   protected static ?MonoLog $_monologEmail = null;
 
-  protected static int $logLevel = MonoLog::INFO;
+  protected static int|Level $logLevel = Level::Info;
 
   protected static function monolog(bool $email = false): ?MonoLog {
 
-    self::$logLevel = MonoLog::DEBUG; // turn on debugging level
+    self::$logLevel = Level::Debug; // turn on debugging level
 
     if ($email) {
 
@@ -32,13 +35,13 @@ class logger {
 
         if (!self::$_monologEmail) {
 
-          self::$_monologEmail = new MonoLog(\config::$WEBNAME);
+          self::$_monologEmail = new MonoLog(config::$WEBNAME);
 
           $email = sendmail::email();
-          $email->to(sendmail::address(\config::$SUPPORT_EMAIL, \config::$SUPPORT_NAME));
+          $email->to(sendmail::address(config::$SUPPORT_EMAIL, config::$SUPPORT_NAME));
 
           $emailHandler = new SymfonyMailerHandler($mailer, $email);
-          $emailHandler->pushProcessor(new IntrospectionProcessor(MonoLog::DEBUG, [
+          $emailHandler->pushProcessor(new IntrospectionProcessor(Level::Debug, [
             'errsys'
           ]));
           self::$_monologEmail->pushHandler($emailHandler);
@@ -53,16 +56,20 @@ class logger {
 
       if (!self::$_monolog) {
 
-        // $path = sprintf('%s/application.log', \config::dataPath());
+        // $path = sprintf('%s/application.log', config::dataPath());
         self::$_monolog = new MonoLog('dvc');
         // self::$_monolog->pushHandler(new StreamHandler($path, MonoLog::WARNING));
 
-        // $syslog = new SyslogHandler(\config::$WEBNAME, LOG_USER, MonoLog::DEBUG, true, LOG_CONS);
+        // $syslog = new SyslogHandler(config::$WEBNAME, LOG_USER, MonoLog::DEBUG, true, LOG_CONS);
         // $formatter = new LineFormatter("%channel%.%level_name%: %message% %context% %extra%");
 
         $syslog = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, self::$logLevel);
         $formatter = new LineFormatter("%channel%.%level_name%: %message% %context%");
         $syslog->setFormatter($formatter);
+        $syslog->pushProcessor(new IntrospectionProcessor(self::$logLevel, [
+          'errsys\\',
+          'application\\'
+        ]));
         self::$_monolog->pushHandler($syslog);
 
         // self::$_monolog->info('My logger is now ready');

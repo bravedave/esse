@@ -11,6 +11,7 @@
 namespace bravedave\esse;
 
 use config;
+use RuntimeException;
 
 abstract class dao {
   protected $_sql_getByID = 'SELECT * FROM %s WHERE id = %d';
@@ -26,7 +27,11 @@ abstract class dao {
 
   function __construct(db $db = null) {
 
-    if (!config::checkDBconfigured()) throw new Exceptions\DBNotConfigured;
+    if (!config::checkDBconfigured()) {
+
+      logger::info( sprintf('<DB not configured> %s', __METHOD__));
+      throw new RuntimeException('DB not configured');
+    }
 
     $this->db = is_null($db) ? config::dbi() : $db;
 

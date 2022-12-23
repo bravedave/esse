@@ -104,13 +104,13 @@ extract((array)$this->data);  ?>
     </div>
   </div>
   <script>
-    (_ => $('#<?= $_modal ?>').on('shown.bs.modal', () => {
-      const form = $('#<?= $_form ?>')
-      const modal = $('#<?= $_modal ?>')
+    (_ => {
+      const form = $('#<?= $_form ?>');
+      const modal = $('#<?= $_modal ?>');
 
-      form
-      $('#<?= $_form ?>')
-        .on('submit', function(e) {
+      modal.on('shown.bs.modal', () => {
+
+        form.on('submit', function(e) {
           let _data = _.serialize(new FormData(this));
           $.post(_.url('<?= $this->route ?>'), _data)
             .then(d => {
@@ -130,6 +130,9 @@ extract((array)$this->data);  ?>
 
           return false;
         });
-    }))(_esse_);
+
+        form.find('input[name="name"]').focus();
+      });
+    })(_esse_);
   </script>
 </form>
