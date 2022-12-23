@@ -22,7 +22,7 @@ class controller extends \controller {
     (page::bootstrap())
       ->head($this->title)
       ->body()->then(fn () => $this->load('nav'))
-      ->main()->then(fn () => $this->load('main'))
+      ->main()->then(fn () => $this->load('about'))
       ->aside()->then(fn () => $this->load('aside'));
   }
 
