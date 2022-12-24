@@ -50,16 +50,24 @@ class controller {
     }
   }
 
-  protected function getView(string $view): string {
+  protected function getView(string $view, array $extensions = []): string {
 
     foreach ($this->viewPath as $path) {
 
       if (file_exists($p = sprintf('%s/%s.php', $path, $view))) return $p;
+      foreach ($extensions as $ext) {
+
+        if (file_exists($p = sprintf('%s/%s.%s', $path, $view, $ext))) return $p;
+      }
     }
 
     foreach ($this->paths as $path) {
 
       if (file_exists($p = sprintf('%s/views/%s.php', $path, $view))) return $p;
+      foreach ($extensions as $ext) {
+
+        if (file_exists($p = sprintf('%s/views/%s.%s', $path, $view, $ext))) return $p;
+      }
     }
     return '';
   }

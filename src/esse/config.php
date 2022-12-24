@@ -94,7 +94,8 @@ abstract class config {
 
   static string $THEME = '';
 
-  static string $WEBNAME = 'Esse - MVC in PHP';
+  static string $WEBNAME = 'Esse';
+  static string $SLOGAN = 'MVC in PHP';
 
   static string $UMASK = '0022';
 

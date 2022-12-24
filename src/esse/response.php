@@ -171,7 +171,7 @@ abstract class response {
     exit;  // don't run anything else
   }
 
-  public static function serve($path) {
+  public static function serve( string $path) : void {
 
     $debug = false;
     // $debug = true;
@@ -207,6 +207,7 @@ abstract class response {
         readfile($path);
         if ($debug) logger::debug("served: $path");
       } elseif (isset($path_parts['extension'])) {
+
         $ext = strtolower($path_parts['extension']);
 
         if ($ext == 'css') {

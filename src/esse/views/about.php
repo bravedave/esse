@@ -10,32 +10,123 @@
 
 namespace home;
 
-printf('<h1>%s</h1>', $this->title);  ?>
+use config;
+use strings;
 
-<h2>What</h2>
+?>
 
-<blockquote class="ps-2">
+<h1><?= config::$WEBNAME ?></h1>
+<h4 class="text-muted mb-4 fst-italic"><?= config::$SLOGAN ?></h4>
 
-  This is a PHP PSR-4 Framework - <a href="https://www.php-fig.org/psr/psr-4/">www.php-fig.org/psr/psr-4/</a>
-</blockquote>
+<div class="row gw-2">
+  <div class="col-md-2">
 
-<h2>Why</h2>
+    <h2>what</h2>
+  </div>
 
-<blockquote class="ps-2">
+  <div class="col mb-2 pt-2">
 
-  <p>To create PHP web based applications you need this style of application</p>
-  <p>This is a <strong>M</strong>odel-<strong>V</strong>iew-<strong>C</strong>ontroller Application in PHP</p>
+    This is a PHP PSR-4 Framework - <a href="https://www.php-fig.org/psr/psr-4/">www.php-fig.org/psr/psr-4/</a>
+  </div>
+</div>
 
-  <p>It:
-  <ol>
-    <li>Creates an entry point</li>
-    <li>Loads php scripts as required</li>
-    <li>Calls a Controller
-      <ul>
-        <li>Models data</li>
-        <li>Displays a View</li>
-      </ul>
-    </li>
-  </ol>
-  </p>
-</blockquote>
+<div class="row gw-2">
+  <div class="col-md-2">
+
+    <h2>why</h2>
+  </div>
+
+  <div class="col mb-2 pt-2">
+
+    <p>To craft PHP applications you need this style of Framework</p>
+    <p>This is a <strong>M</strong>odel-<strong>V</strong>iew-<strong>C</strong>ontroller Application in PHP</p>
+
+    <p>It:
+    <ol>
+      <li>Creates an entry point</li>
+      <li>Loads php scripts as required</li>
+      <li>Calls a Controller
+        <ul>
+          <li>Models data</li>
+          <li>Displays a View</li>
+        </ul>
+      </li>
+    </ol>
+    </p>
+  </div>
+
+  <div class="col-md-4 mb-2">
+
+    <img class="img-fluid" src="<?= strings::url($this->route . '/images/application.drawio.svg') ?>">
+  </div>
+</div>
+
+<div class="row gw-2">
+  <div class="col-md-2">
+
+    <h2>how</h2>
+  </div>
+
+  <div class="col mb-2 pt-2">
+
+    <ol>
+      <li>Create a composer file
+        <pre class="bg-light p-2">
+{
+  "name": "yourname/yourappname",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "": "src/app"
+    }
+  },
+  "require": {
+    "bravedave/esse": "dev-main"
+  },
+  "repositories": {
+    "bravedave-esse": {
+      "type": "git",
+      "url": "https://github.com/bravedave/esse"
+    }
+  }
+}
+        </pre>
+      </li>
+
+      <li>update to install files
+        <pre class="bg-light p-2">
+composer u
+
+cp -r vendor/bravedave/esse/src/app/ src/
+cp -r vendor/bravedave/esse/www .
+        </pre>
+      </li>
+
+      <li>Run
+        <pre class="bg-light p-2">
+cd www
+php -S localhost:8080 _mvp.php
+        </pre>
+      </li>
+    </ol>
+
+    <p>you will get a logon screen, but there are no users or databases, you will <strong>not</strong> be able to logon</p>
+
+    <ul>
+
+      <li>a data folder was created in src/data
+        <ol>
+
+          <li>rename the esse-defaults-sample.json to esse-defaults.json</li>
+          <li>edit esse-defaults.json, <strong>set authentication false</strong></li>
+          <li>refresh the browser - no logon requirement</li>
+          <li>create a user in users with a password</li>
+          <li>re-enable auth (edit esse-defaults.json, <strong>set authentication true</strong>)</li>
+        </ol>
+      </li>
+      <li>etc .. etc..</li>
+    </ul>
+
+  </div>
+</div>
