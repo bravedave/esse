@@ -18,13 +18,13 @@
 namespace bravedave\esse;
 
 use config, FilesystemIterator;
-use GlobIterator, MatthiasMullie;
+use GlobIterator, MatthiasMullie\Minify\CSS;
 use RuntimeException;
 
 abstract class cssmin {
   public static $debug = false;
 
-  protected static function _css_create($options) {
+  protected static function _css_create($options): void {
 
     $input = [];
     if (is_array($options->cssFiles)) {
@@ -52,14 +52,14 @@ abstract class cssmin {
       }
     }
 
-    $minifier = new MatthiasMullie\Minify\CSS;
+    $minifier = new CSS;
     $minifier->add(implode(PHP_EOL, $input));
     // $content = $minifier->minify();
 
     file_put_contents($options->libFile, $minifier->minify());
   }
 
-  protected static function _css_serve($options) {
+  protected static function _css_serve($options): void {
 
     $expires = config::$CSS_EXPIRE_TIME;
     $modTime = filemtime($options->libFile);
@@ -71,7 +71,7 @@ abstract class cssmin {
     print file_get_contents($options->libFile);
   }
 
-  public static function viewcss($params) {
+  public static function viewcss($params): void {
 
     $options = (object)array_merge([
       'debug' => false,

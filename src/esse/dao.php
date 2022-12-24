@@ -14,22 +14,22 @@ use config;
 use RuntimeException;
 
 abstract class dao {
-  protected $_sql_getByID = 'SELECT * FROM %s WHERE id = %d';
-  protected $_sql_getAll = 'SELECT %s FROM %s %s';
+  protected string $_sql_getByID = 'SELECT * FROM %s WHERE id = %d';
+  protected string $_sql_getAll = 'SELECT %s FROM %s %s';
 
-  protected $_db_name = null;
+  protected ?string $_db_name = null;
   protected $_db_cache_prefix = null;
   protected $_db_allways_check_structure = true;
   protected $template = null;
 
   public db $db;
-  public $log = false;
+  public bool $log = false;
 
   function __construct(db $db = null) {
 
     if (!config::checkDBconfigured()) {
 
-      logger::info( sprintf('<DB not configured> %s', __METHOD__));
+      logger::info(sprintf('<DB not configured> %s', __METHOD__));
       throw new RuntimeException('DB not configured');
     }
 
@@ -104,10 +104,8 @@ abstract class dao {
   }
 
   protected function check() {
-    if ($dbc = $this->structure()) {
-      return $dbc->check();
-    }
 
+    if ($dbc = $this->structure()) return $dbc->check();
     return false;
   }
 
@@ -194,15 +192,17 @@ abstract class dao {
     return 0;
   }
 
-  public function db_name() {
+  public function db_name(): string {
+
     return $this->_db_name;
   }
 
-  public static function dbTimeStamp() {
+  public static function dbTimeStamp(): string {
+
     return (db::dbTimeStamp());
   }
 
-  public function delete($id) {
+  public function delete($id): void {
     if (is_null($this->_db_name)) throw new Exceptions\DBNameIsNull;
 
     $this->db->log = $this->log;
@@ -216,7 +216,8 @@ abstract class dao {
     return $res->dtoSet($func, $this->template);
   }
 
-  public function escape($s) {
+  public function escape($s): string {
+
     return $this->db->escape($s);
   }
 
@@ -306,6 +307,7 @@ abstract class dao {
   }
 
   public function getRichData(dto $dto): ?dto {
+
     return $dto;
   }
 
@@ -326,7 +328,7 @@ abstract class dao {
     if (is_null($this->db_name())) throw new Exceptions\DBNameIsNull;
 
     $this->db->log = $this->log;
-    return ($this->db->Update($this->db_name(), $a, $condition, $flushCache));
+    return $this->db->Update($this->db_name(), $a, $condition, $flushCache);
   }
 
   public function UpdateByID($a, $id) {
@@ -353,7 +355,7 @@ abstract class dao {
     return $this->db->Q($query);
   }
 
-  public function quote($s) {
+  public function quote($s): string {
 
     return $this->db->quote($s);
   }

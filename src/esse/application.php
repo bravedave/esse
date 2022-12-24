@@ -170,7 +170,7 @@ class application {
   }
 
   protected static $_loaded_fallback = false;
-  public static function load_esse_autoloader_fallback() {
+  public static function load_esse_autoloader_fallback(): void {
 
     if (!self::$_loaded_fallback) {
 

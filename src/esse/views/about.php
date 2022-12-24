@@ -68,7 +68,7 @@ use strings;
   </div>
 
   <div class="col mb-2 pt-2">
-
+    <!-- composer require --working-dir=mvp bravedave/mvp -->
     <ol>
       <li>Create a composer file
         <pre class="bg-light p-2">

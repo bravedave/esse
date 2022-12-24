@@ -11,7 +11,7 @@
 
 namespace bravedave\esse;
 
-use APCUIterator;
+use APCUIterator, MatthiasMullie\Scrapbook\Adapters\Apc;
 use config;
 
 class cache {
@@ -25,7 +25,7 @@ class cache {
     $this->ttl = config::$DB_CACHE_TTL;
 
     // create Scrapbook KeyValueStore object
-    $this->_cache = new \MatthiasMullie\Scrapbook\Adapters\Apc;
+    $this->_cache = new Apc;
   }
 
   static function instance(): self {
@@ -34,7 +34,7 @@ class cache {
     return self::$_instance;
   }
 
-  function get(string $key) {
+  public function get(string $key) {
     if ($res = $this->_cache->get($key)) {
 
       if (config::$DB_CACHE_DEBUG) logger::info(sprintf('get(%s) (hit) : %s', $key, __METHOD__));
@@ -46,7 +46,7 @@ class cache {
     return $res;
   }
 
-  function set($key, $value, $ttl = null) {
+  public function set(string $key, $value, $ttl = null): void {
 
     if (!$ttl) $ttl = $this->ttl;
 
@@ -56,7 +56,7 @@ class cache {
     }
   }
 
-  function delete($key, $wildcard = false) {
+  public function delete(string $key, $wildcard = false): void {
 
     if ($wildcard) {
 
@@ -75,7 +75,7 @@ class cache {
     }
   }
 
-  function flush() {
+  public function flush(): void {
 
     if (config::$DB_CACHE_DEBUG || \config::$DB_CACHE_DEBUG_FLUSH) logger::info(sprintf('<flush> : %s', __METHOD__));
     $this->_cache->flush();
