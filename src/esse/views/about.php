@@ -73,7 +73,6 @@ use strings;
       <li>Create a composer file
         <pre class="bg-light p-2">
 {
-  "name": "yourname/yourappname",
   "license": "MIT",
   "minimum-stability": "dev",
   "autoload": {
@@ -91,42 +90,46 @@ use strings;
     }
   }
 }
-        </pre>
+</pre>
       </li>
 
       <li>update to install files
         <pre class="bg-light p-2">
 composer u
+</pre>
+      </li>
 
-cp -r vendor/bravedave/esse/src/app/ src/
+      <li>install a sample application
+        <pre class="bg-light p-2">
+mkdir src
+cp -r vendor/bravedave/esse/src/app src/app
 cp -r vendor/bravedave/esse/www .
-        </pre>
+</pre>
       </li>
 
       <li>Run
         <pre class="bg-light p-2">
 cd www
 php -S localhost:8080 _mvp.php
-        </pre>
+</pre>
       </li>
     </ol>
 
-    <p>you will get a logon screen, but there are no users or databases, you will <strong>not</strong> be able to logon</p>
+    <p>the program will run, but there are no users or database</p>
 
     <ul>
 
       <li>a data folder was created in src/data
-        <ol>
-
-          <li>rename the esse-defaults-sample.json to esse-defaults.json</li>
-          <li>edit esse-defaults.json, <strong>set authentication false</strong></li>
-          <li>refresh the browser - no logon requirement</li>
-          <li>create a user in users with a password</li>
-          <li>re-enable auth (edit esse-defaults.json, <strong>set authentication true</strong>)</li>
-        </ol>
-      </li>
-      <li>etc .. etc..</li>
     </ul>
 
+    <ol>
+
+      <li>rename the esse-defaults-sample.json to esse-defaults.json <em>- activates SQLite as the database</em></li>
+      <li>create a user in users with a password</li>
+      <li>logoff</li>
+      <li>authentication is now required</li>
+    </ol>
+
+    <p>dive into the app folder and build your app ! etc .. etc..</p>
   </div>
 </div>
