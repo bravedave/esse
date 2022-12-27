@@ -23,6 +23,7 @@
   "minimum-stability": "dev",
   "prefer-stable" : true,
   "require": {
+    "php": ">=8.1",
     "ext-fileinfo": "*",
     "ext-posix": "*",
     "monolog/monolog": "*",
@@ -42,6 +43,9 @@
       "bash src/esse/resource/sass-bootstrap.sh",
       "bravedave\\esse\\resource\\importJS::bootstrap",
       "bash src/esse/resource/bootstrap-icons.sh"
+    ],
+    "bootstrap-js": [
+      "bravedave\\esse\\resource\\importJS::bootstrap"
     ],
     "post-update-cmd": [
       "bash src/esse/resource/sass-bootstrap.sh",

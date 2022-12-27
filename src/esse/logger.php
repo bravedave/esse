@@ -57,7 +57,7 @@ class logger {
       if (!self::$_monolog) {
 
         // $path = sprintf('%s/application.log', config::dataPath());
-        self::$_monolog = new MonoLog('dvc');
+        self::$_monolog = new MonoLog('esse');
         // self::$_monolog->pushHandler(new StreamHandler($path, MonoLog::WARNING));
 
         // $syslog = new SyslogHandler(config::$WEBNAME, LOG_USER, MonoLog::DEBUG, true, LOG_CONS);
@@ -81,12 +81,24 @@ class logger {
 
   static public function debug(string $message): void {
 
-    self::monolog()->debug($message);
+    if (php_sapi_name() == 'cli') {
+
+      echo $message . PHP_EOL;
+    } else {
+
+      self::monolog()->debug($message);
+    }
   }
 
   static public function info(string $message): void {
 
-    self::monolog()->info($message);
+    if (php_sapi_name() == 'cli') {
+
+      echo $message . PHP_EOL;
+    } else {
+
+      self::monolog()->info($message);
+    }
   }
 
   public static function sql(string $v): void {
