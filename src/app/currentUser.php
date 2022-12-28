@@ -38,6 +38,8 @@ abstract class currentUser extends bravedave\esse\currentUser {
 
     if (self::$_userCount < 0) {
 
+      users\config::users_checkdatabase();
+
       self::$_userCount = (new users\dao\users)->count();
       logger::debug(sprintf('<there are %d users> %s', self::$_userCount, __METHOD__));
     }

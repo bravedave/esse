@@ -18,9 +18,9 @@ abstract class dao {
   protected string $_sql_getAll = 'SELECT %s FROM %s %s';
 
   protected ?string $_db_name = null;
-  protected $_db_cache_prefix = null;
-  protected $_db_allways_check_structure = true;
-  protected $template = null;
+  protected ?string $_db_cache_prefix = null;
+  protected bool $_db_allways_check_structure = true;
+  protected ?string $template = null;
 
   public db $db;
   public bool $log = false;

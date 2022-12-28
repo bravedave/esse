@@ -26,9 +26,9 @@
     "php": ">=8.1",
     "ext-fileinfo": "*",
     "ext-posix": "*",
-    "monolog/monolog": "*",
-    "symfony/mailer": "*",
-    "matthiasmullie/minify": "*"
+    "matthiasmullie/minify": "*",
+    "monolog/monolog": "<3",
+    "symfony/mailer": "^6.2"
   },
   "require-dev": {
     "ext-apcu": "*",

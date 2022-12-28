@@ -17,17 +17,16 @@ use Monolog\Logger as MonoLog;
 use Monolog\Processor\IntrospectionProcessor;
 
 use config;
-use Monolog\Level;
 
 class logger {
   protected static ?MonoLog $_monolog = null;
   protected static ?MonoLog $_monologEmail = null;
 
-  protected static int|Level $logLevel = Level::Info;
+  protected static int $logLevel = MonoLog::INFO;
 
   protected static function monolog(bool $email = false): ?MonoLog {
 
-    self::$logLevel = Level::Debug; // turn on debugging level
+    self::$logLevel = MonoLog::DEBUG; // turn on debugging level
 
     if ($email) {
 
@@ -41,7 +40,7 @@ class logger {
           $email->to(sendmail::address(config::$SUPPORT_EMAIL, config::$SUPPORT_NAME));
 
           $emailHandler = new SymfonyMailerHandler($mailer, $email);
-          $emailHandler->pushProcessor(new IntrospectionProcessor(Level::Debug, [
+          $emailHandler->pushProcessor(new IntrospectionProcessor(MonoLog::DEBUG, [
             'errsys'
           ]));
           self::$_monologEmail->pushHandler($emailHandler);

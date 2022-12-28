@@ -13,8 +13,8 @@ namespace todo\dao;
 use bravedave\esse\dao;
 
 class todo extends dao {
-  protected $_db_name = 'todo';
-  protected $template = __NAMESPACE__ . '\dto\todo';
+  protected ?string $_db_name1 = 'todo';
+  protected ?string $template = __NAMESPACE__ . '\dto\todo';
 
   public function getMatrix() : array {
 
