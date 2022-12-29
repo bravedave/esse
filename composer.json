@@ -3,7 +3,7 @@
   "description": "Essential Core Application",
   "type": "library",
   "license": "MIT",
-  "version": "v22.12.01",
+  "version": "v22.12.02",
   "autoload": {
     "psr-4": {
       "bravedave\\esse\\": "src/esse/"
