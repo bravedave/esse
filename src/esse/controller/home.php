@@ -53,27 +53,18 @@ class home extends controller {
 
     if ($file) {
 
-      if ('application.drawio.svg' == $file) {
+      $exts = ['jpg', 'png', 'svg'];
+      $fi = new SplFileInfo($file);
+      if (in_array($fi->getExtension(), $exts)) {
 
-        /**
-         * special case for compatibility with Github
-         */
-        response::serve(realpath(__DIR__ . '/../../../' . $file));
-      } else {
+        $fileName = $fi->getBasename('.' . $fi->getExtension());
+        if ($path = $this->getView($fileName, $exts)) {
 
-        $exts = ['jpg', 'png', 'svg'];
-        $fi = new SplFileInfo($file);
-        if (in_array($fi->getExtension(), $exts)) {
+          response::serve($path);
+        } else {
 
-          $fileName = $fi->getBasename('.' . $fi->getExtension());
-          if ($path = $this->getView($fileName, $exts)) {
-
-            response::serve($path);
-          } else {
-
-            logger::info(sprintf('<%s> %s', $fileName, __METHOD__));
-            logger::info(sprintf('<not found : %s> %s', $file, __METHOD__));
-          }
+          logger::info(sprintf('<%s> %s', $fileName, __METHOD__));
+          logger::info(sprintf('<not found : %s> %s', $file, __METHOD__));
         }
       }
     }

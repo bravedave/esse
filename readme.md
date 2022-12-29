@@ -26,7 +26,7 @@ It:
    * Models data
    * Displays a View
 
-![foo](/images/application.drawio.svg "MVC")
+![foo](application.drawio.svg "MVC")
 
 ### How
 

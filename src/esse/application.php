@@ -46,6 +46,14 @@ class application {
       response::serve(__DIR__ . '/resource/favicon.ico');
       return;
     }
+    elseif ('application.drawio.svg' == request::controller()) {
+
+      /**
+       * special case for compatibility with Github
+       */
+      response::serve(__DIR__ . '/../../application.drawio.svg');
+      return;
+    }
 
     $controller = implode('\\', [
       request::controller(),
