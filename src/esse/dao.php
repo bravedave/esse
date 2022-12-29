@@ -57,39 +57,6 @@ abstract class dao {
     return $res->dtoSet(null, $template);
   }
 
-  protected function cacheKey(int $id, string $field = ''): string {
-
-    if ($field) {
-
-      return sprintf(
-        '%s_%s_%s_%s',
-        $this->cachePrefix(),
-        $this->db_name(),
-        $id,
-        $field
-      );
-    } else {
-
-      return sprintf(
-        '%s_%s_%s',
-        $this->cachePrefix(),
-        $this->db_name(),
-        $id
-      );
-    }
-  }
-
-  protected function cacheKey_delete(int $id, string $field = '') {
-    return sprintf('/%s/', $this->cacheKey($id, $field));
-  }
-
-  protected function cachePrefix() {
-
-    if ($this->_db_cache_prefix) return config::dbCachePrefix() . $this->_db_cache_prefix;
-
-    return config::dbCachePrefix();
-  }
-
   protected function before() {
     /*
 		* Abstract method placeholder for use by the child class.
@@ -101,6 +68,44 @@ abstract class dao {
 		* this method is called at the end of __construct and can
 		* be used to modify the _controller class
 		*/
+  }
+
+  protected function cacheKey(int $id, string $field = ''): string {
+
+    if ($field) {
+
+      return sprintf(
+        '%s_%s_%s',
+        $this->db_name(),
+        $id,
+        $field
+      );
+    } else {
+
+      return sprintf(
+        '%s_%s',
+        $this->db_name(),
+        $id
+      );
+    }
+  }
+
+  protected function cachePrefix(): string {
+
+    if ($this->_db_cache_prefix) return config::dbCachePrefix() . $this->_db_cache_prefix;
+    return config::dbCachePrefix();
+  }
+
+  protected ?cache $_cache_instance = null;
+  protected function cache(): ?cache {
+
+    if (config::$DB_CACHE == 'APC') {
+
+      if (!$this->_cache_instance) $this->_cache_instance = cache::instance($this->cachePrefix());
+      return $this->_cache_instance;
+    }
+
+    return null;
   }
 
   protected function check() {
@@ -167,11 +172,10 @@ abstract class dao {
 
   public function cacheDelete(int $id): void {
 
-    if (config::$DB_CACHE == 'APC') {
+    if ($cache = $this->cache()) {
 
-      $cache = cache::instance();
-      $key = $this->cacheKey_delete($id);
-      $cache->delete($key, true);
+      $key = $this->cacheKey($id);
+      if (!$cache->delete($key)) logger::debug(sprintf('<failed to delete %s> %s', $key, __METHOD__));
     }
   }
 
@@ -233,9 +237,8 @@ abstract class dao {
 
     if (!$this->_db_name) throw new Exceptions\DBNameIsNull;
 
-    if (config::$DB_CACHE == 'APC') {
+    if ($cache = $this->cache()) {
 
-      $cache = cache::instance();
       $key = $this->cacheKey($id);
       if ($dto = $cache->get($key)) {
 
@@ -253,15 +256,15 @@ abstract class dao {
           $approvedType = ltrim($this->template ? $this->template : __NAMESPACE__ . '\dto\dto', '\\');
           if ($thisType == $approvedType) {
 
-            if (config::$DB_CACHE_DEBUG) logger::info(sprintf('<type check %s:%s> %s[\]%s', $thisType, $approvedType, get_class($this), __METHOD__));
+            if (config::$DB_CACHE_DEBUG) logger::info(sprintf('<type check %s> <%s> %s', $thisType, $approvedType, __METHOD__));
             return $dto;
           } elseif (config::$DB_CACHE_DEBUG || config::$DB_CACHE_DEBUG_TYPE_CONFLICT) {
 
-            logger::info(sprintf('<fails type check %s:%s> %s[\]%s', $thisType, $approvedType, get_class($this), __METHOD__));
+            logger::info(sprintf('<fails type check %s> <%s> %s', $thisType, $approvedType, __METHOD__));
           }
         } elseif (config::$DB_CACHE_DEBUG || config::$DB_CACHE_DEBUG_TYPE_CONFLICT) {
 
-          logger::info(sprintf('<cached object has no type> %s[\]%s', get_class($this), __METHOD__));
+          logger::info(sprintf('<cached object has no type> %s', __METHOD__));
         }
       }
     } else {
@@ -287,9 +290,8 @@ abstract class dao {
 
     if (!$this->_db_name) throw new Exceptions\DBNameIsNull;
 
-    if (config::$DB_CACHE == 'APC') {
+    if ($cache = $this->cache()) {
 
-      $cache = cache::instance();
       $key = $this->cacheKey($id, $fld);
       if ($v = $cache->get($key)) return ($v);
     }
@@ -366,23 +368,19 @@ abstract class dao {
     return false;
   }
 
-  protected function TableChecks() {
+  protected function TableChecks(): void {
 
-    if (!$this->db->valid()) return false;
+    if (!$this->db->valid()) return;
 
-    if ($this->_db_name) return false;
+    if (!$this->_db_name) return;
 
-    if (!($this->TableExists())) return $this->check();
-
-    return false;
+    if (!($this->TableExists())) $this->check();
   }
 
-  protected function TableExists($table = null): bool {
+  protected function TableExists(null|string $table = null): bool {
 
     if (is_null($table)) $table = $this->db_name();
-    if (is_null($table)) return false;
-
-    //~ \sys::logger( "checking for: $table" );
+    if (!$table) return false;
 
     if ('sqlite' == config::$DB_TYPE) {
 
