@@ -54,6 +54,14 @@ class application {
 
     if (!class_exists($controller)) {
 
+      if ($map = routes::map(request::controller())) {
+
+        $controller = $map;
+      }
+    }
+
+    if (!class_exists($controller)) {
+
       // esse controller
       $controller = implode('\\', [
         __NAMESPACE__,
