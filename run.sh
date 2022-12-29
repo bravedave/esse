@@ -47,7 +47,7 @@ else
         cp httpd-minimal.conf $config
       elif [[ -f vendor/bravedave/esse/httpd-minimal.conf ]]; then
 
-        cp vendor/bravedave/esse/ $config
+        cp vendor/bravedave/esse/httpd-minimal.conf $config
       fi
 
       echo "CustomLog $access_log common" >>$config
