@@ -64,7 +64,7 @@ abstract class config {
   static string $DB_TYPE = 'none';  // needs to be mysql or sqlite to run, disable with 'disabled'
   static string $DB_NAME = 'dbname';
   static string $DB_USER = 'dbuser';
-  static string $DB_PASS = '';
+  static string $DB_PASS = 'dbpass';
   static bool $DB_ALTER_FIELD_STRUCTURES = false;  // experimental
 
   static string $EMAILDOMAIN = 'example.tld';
@@ -234,6 +234,10 @@ abstract class config {
       $_a = [
         'authentication' => self::$AUTHENTICATION,
         'db_type' => self::$DB_TYPE,
+        'db_host' => self::$DB_HOST,
+        'db_name' => self::$DB_NAME,
+        'db_user' => self::$DB_USER,
+        'db_pass' => self::$DB_PASS,
         'db_cache' => self::$DB_CACHE,
         'db_cache_debug' => self::$DB_CACHE_DEBUG,
         'db_cache_debug_flush' => self::$DB_CACHE_DEBUG_FLUSH,
@@ -257,6 +261,10 @@ abstract class config {
 
       self::$AUTHENTICATION = $a->authentication;
       self::$DB_TYPE = $a->db_type;
+      self::$DB_HOST = $a->db_host;
+      self::$DB_NAME = $a->db_name;
+      self::$DB_USER = $a->db_user;
+      self::$DB_PASS = $a->db_pass;
       self::$DB_CACHE = $a->db_cache;
       self::$DB_CACHE_DEBUG = $a->db_cache_debug;
       self::$DB_CACHE_DEBUG_FLUSH = $a->db_cache_debug_flush;
@@ -281,10 +289,15 @@ abstract class config {
 
       self::$WEBNAME = $a->webname;
     } else {
+
       $path = implode(DIRECTORY_SEPARATOR, [
         self::dataPath(),
         'esse-defaults-sample.json'
+      ]);
 
+      $pathSQL = implode(DIRECTORY_SEPARATOR, [
+        self::dataPath(),
+        'esse-mariadb-setup-example.sql'
       ]);
 
       if (!file_exists($path)) {
@@ -292,6 +305,10 @@ abstract class config {
         $a = [
           'authentication' => true,
           'db_type' => 'sqlite',
+          'db_host' => self::$DB_HOST,
+          'db_name' => self::$DB_NAME,
+          'db_user' => self::$DB_USER,
+          'db_pass' => self::$DB_PASS,
           'db_cache' => self::$DB_CACHE,
           'db_cache_debug' => self::$DB_CACHE_DEBUG,
           'db_cache_debug_flush' => self::$DB_CACHE_DEBUG_FLUSH,
@@ -312,6 +329,20 @@ abstract class config {
         ];
 
         file_put_contents($path, json_encode($a, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+      }
+
+      if (!file_exists($pathSQL)) {
+
+        file_put_contents($pathSQL, sprintf(
+          "CREATE DATABASE IF NOT EXISTS `%s`;\n" .
+            "GRANT ALL ON `%s`.* TO '%s'@'%s' IDENTIFIED BY '%s';\n" .
+            "FLUSH PRIVILEGES;",
+            self::$DB_NAME,
+            self::$DB_NAME,
+            self::$DB_USER,
+            request::getServerIP(),
+            self::$DB_PASS
+        ));
       }
     }
 
