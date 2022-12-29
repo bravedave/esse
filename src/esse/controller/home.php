@@ -33,7 +33,16 @@ class home extends controller {
     $readme = realpath(__DIR__ . '/../../../readme.md');
     $fc = file_get_contents($readme);
 
-    (page::bootstrap())
+    $page = page::bootstrap();
+
+    $version = '11.7.0';
+
+    $page->css[] = sprintf('<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/styles/default.min.css">', $version);
+
+    $page->scripts[] = sprintf( '<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/highlight.min.js"></script>', $version);
+    $page->late[] = '<script>hljs.highlightAll();</script>';
+
+    $page
       ->head($this->title)
       ->body()->then(fn () => $this->load('nav'))
       ->main()->then(fn () => printf('<div class="markdown-body">%s</div>', Parsedown::instance()->text($fc)))
