@@ -58,7 +58,7 @@ class home extends controller {
         /**
          * special case for compatibility with Github
          */
-        response::serve(realpath(__DIR__ . '/../../images/' . $file));
+        response::serve(realpath(__DIR__ . '/../../../' . $file));
       } else {
 
         $exts = ['jpg', 'png', 'svg'];
