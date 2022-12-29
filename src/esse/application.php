@@ -11,8 +11,6 @@
 namespace bravedave\esse;
 
 use config, currentUser;
-use ReflectionMethod;
-use RuntimeException;
 
 // use controller;
 
