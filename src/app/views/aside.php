@@ -21,6 +21,9 @@ use config, currentUser, strings; ?>
   <li class="nav-item">
     <a class="nav-link" href="<?= strings::url('users') ?>">users</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="<?= strings::url('info') ?>">info</a>
+  </li>
   <?php if (config::$AUTHENTICATION && currentUser::isValid()) { ?>
     <li class="nav-item">
       <a class="nav-link" href="<?= strings::url('logon/logoff') ?>">logoff</a>
