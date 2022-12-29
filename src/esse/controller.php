@@ -10,6 +10,9 @@
 
 namespace bravedave\esse;
 
+use ReflectionMethod;
+use RuntimeException;
+
 /**
  * execute the instructions of the application
  */
@@ -85,6 +88,58 @@ class controller {
     // logger::info($this->route);
 
     $this->before();
+  }
+
+  public function __invoke(array $params): void {
+
+    if ($params) {
+
+      $method = $params[0];
+      if (method_exists($this, $method)) {
+
+        if ((new ReflectionMethod($this, $method))->isPublic()) {
+
+          if ($p1 = $params[1] ?? null) {
+
+            if ($p2 = $params[2] ?? null) {
+
+              $this->{$method}($p1, $p2);
+            } else {
+
+              $this->{$method}($p1);
+            }
+          } else {
+
+            $this->{$method}();
+          }
+        } else {
+
+          logger::info(sprintf('<%s method is not public in %s> %s', $method, __CLASS__, __METHOD__));
+          throw new RuntimeException('illegal access');
+        }
+      } elseif ($method) {
+
+        if ($p1 = $params[1] ?? null) {
+
+          if ($p2 = $params[2] ?? null) {
+
+            $this->index($method, $p1, $p2);
+          } else {
+
+            $this->index($method, $p1);
+          }
+        } else {
+
+          $this->index($method);
+        }
+      } else {
+
+        $this->index();
+      }
+    } else {
+
+      $this->index();
+    }
   }
 
   public function index(): void {
