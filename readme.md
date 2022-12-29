@@ -43,12 +43,6 @@ It:
   },
   "require": {
     "bravedave/esse": "dev-main"
-  },
-  "repositories": {
-    "bravedave-esse": {
-      "type": "git",
-      "url": "https://github.com/bravedave/esse"
-    }
   }
 }
 ```
