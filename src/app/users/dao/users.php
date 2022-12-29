@@ -14,8 +14,8 @@ use bravedave\esse\dao;
 use strings;
 
 class users extends dao {
-  protected ?string $_db_name = 'users';
-  protected ?string $template = __NAMESPACE__ . '\dto\users';
+  protected string $_db_name = 'users';
+  protected string $template = __NAMESPACE__ . '\dto\users';
 
   public function getMatrix(): array {
 

@@ -17,10 +17,9 @@ abstract class dao {
   protected string $_sql_getByID = 'SELECT * FROM %s WHERE id = %d';
   protected string $_sql_getAll = 'SELECT %s FROM %s %s';
 
-  protected ?string $_db_name = null;
-  protected ?string $_db_cache_prefix = null;
-  protected bool $_db_allways_check_structure = true;
-  protected ?string $template = null;
+  protected string $_db_name = '';
+  protected string $_db_cache_prefix = '';
+  protected string $template = '';
 
   public db $db;
   public bool $log = false;
@@ -53,7 +52,8 @@ abstract class dao {
     return null;
   }
 
-  public static function asDTO($res, $template = null): array {
+  public static function asDTO($res, string $template = ''): array {
+
     return $res->dtoSet(null, $template);
   }
 
@@ -141,14 +141,18 @@ abstract class dao {
       $type = strtoupper(preg_replace('@\(.*$@', '', $dto->Type));
 
       if ('BIGINT' == $type || 'SMALLINT' == $type || 'TINYINT' == $type || 'INT' == $type) {
+
         $dto->Len = trim(preg_replace('@^.*\(@', '', $dto->Type), ') ');
         $dto->Type = $type;
         $dto->Default = (int)$dto->Default;
       } elseif ('DATE' == $type || 'DATETIME' == $type) {
+
         $dto->Type = $type;
       } elseif ('MEDIUMTEXT' == $type || 'TEXT' == $type) {
+
         $dto->Type = $type;
       } elseif ('VARCHAR' == $type || 'VARBINARY' == $type) {
+
         $dto->Len = trim(preg_replace('@^.*\(@', '', $dto->Type), ') ');
         $dto->Type = $type;
       }
@@ -157,10 +161,7 @@ abstract class dao {
     });
 
     $o = new dto;
-    foreach ($dtoSet as $dto) {
-      $o->{$dto->Field} = $dto->Default;
-    }
-
+    foreach ($dtoSet as $dto) $o->{$dto->Field} = $dto->Default;
     return $o;
   }
 
@@ -176,17 +177,16 @@ abstract class dao {
 
   public function create() {    /* returns a new dto of the file */
 
-    if (is_null($this->template)) return $this->_create();
+    if ($this->template) return $this->_create();
     return new $this->template;
   }
 
   public function count(): int {
-    if (is_null($this->_db_name)) throw new Exceptions\DBNameIsNull;
+    if (!$this->_db_name) throw new Exceptions\DBNameIsNull;
 
     if ($res = $this->Result(sprintf('SELECT COUNT(*) as i FROM `%s`', $this->_db_name))) {
-      if ($dto = $res->dto()) {
-        return $dto->i;
-      }
+
+      if ($dto = $res->dto()) return $dto->i;
     }
 
     return 0;
@@ -194,16 +194,17 @@ abstract class dao {
 
   public function db_name(): string {
 
-    return $this->_db_name;
+    if ($this->_db_name) return $this->_db_name;
+    return '';
   }
 
   public static function dbTimeStamp(): string {
 
-    return (db::dbTimeStamp());
+    return db::dbTimeStamp();
   }
 
   public function delete($id): void {
-    if (is_null($this->_db_name)) throw new Exceptions\DBNameIsNull;
+    if (!$this->_db_name) throw new Exceptions\DBNameIsNull;
 
     $this->db->log = $this->log;
     $this->Q(sprintf('DELETE FROM %s WHERE id = %d', $this->_db_name, (int)$id));
@@ -222,7 +223,7 @@ abstract class dao {
   }
 
   public function getAll($fields = '*', $order = '') {
-    if (is_null($this->_db_name)) throw new Exceptions\DBNameIsNull;
+    if (!$this->_db_name) throw new Exceptions\DBNameIsNull;
 
     $this->db->log = $this->log;
     return ($this->Result(sprintf($this->_sql_getAll, $fields, $this->db_name(), $order)));
@@ -230,12 +231,14 @@ abstract class dao {
 
   public function getByID($id) {
 
-    if (is_null($this->_db_name)) throw new Exceptions\DBNameIsNull;
+    if (!$this->_db_name) throw new Exceptions\DBNameIsNull;
 
     if (config::$DB_CACHE == 'APC') {
+
       $cache = cache::instance();
       $key = $this->cacheKey($id);
       if ($dto = $cache->get($key)) {
+
         /**
          * The problem is there are some dirty unserializable dto's,
          * particularly in CMS (private repository) which is very old code
@@ -245,6 +248,7 @@ abstract class dao {
          *
          */
         if ($thisType = get_class($dto)) {
+
           $thisType = $thisType; // namespace will have preceding \, get_class will come from root
           $approvedType = ltrim($this->template ? $this->template : __NAMESPACE__ . '\dto\dto', '\\');
           if ($thisType == $approvedType) {
@@ -267,10 +271,10 @@ abstract class dao {
 
     $this->db->log = $this->log;
     if ($res = $this->Result(sprintf($this->_sql_getByID, $this->_db_name, (int)$id))) {
+
       if ($dto = $res->dto($this->template)) {
-        if (config::$DB_CACHE == 'APC') {
-          $cache->set($key, $dto);
-        }
+
+        if (config::$DB_CACHE == 'APC') $cache->set($key, $dto);
       }
 
       return ($dto);
@@ -281,24 +285,21 @@ abstract class dao {
 
   public function getFieldByID($id, $fld) {
 
-    if (is_null($this->_db_name)) throw new Exceptions\DBNameIsNull;
+    if (!$this->_db_name) throw new Exceptions\DBNameIsNull;
 
     if (config::$DB_CACHE == 'APC') {
 
       $cache = cache::instance();
       $key = $this->cacheKey($id, $fld);
-      if ($v = $cache->get($key)) {
-        return ($v);
-      }
+      if ($v = $cache->get($key)) return ($v);
     }
 
     $this->db->log = $this->log;
     if ($res = $this->Result(sprintf($this->_sql_getByID, $this->_db_name, (int)$id))) {
-      if ($dto = $res->dto($this->template)) {
-        if (config::$DB_CACHE == 'APC') {
-          $cache->set($key, $dto->{$fld});
-        }
 
+      if ($dto = $res->dto($this->template)) {
+
+        if (config::$DB_CACHE == 'APC') $cache->set($key, $dto->{$fld});
         return ($dto->{$fld});
       }
     }
@@ -369,15 +370,9 @@ abstract class dao {
 
     if (!$this->db->valid()) return false;
 
-    if (is_null($this->_db_name)) return false;
+    if ($this->_db_name) return false;
 
-    if ($this->_db_allways_check_structure) {
-
-      return $this->check();
-    } elseif (!($this->TableExists())) {
-
-      return $this->check();
-    }
+    if (!($this->TableExists())) return $this->check();
 
     return false;
   }
