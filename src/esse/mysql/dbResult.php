@@ -24,7 +24,8 @@ class dbResult extends esse_dbResult {
 
   public function fetch(): array {
 
-    return $this->result->fetch_assoc();
+    if ( $res = $this->result->fetch_assoc()) return $res;
+    return [];
   }
 
   public function fetch_fields() {

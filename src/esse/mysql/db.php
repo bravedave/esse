@@ -17,14 +17,19 @@ use bravedave\esse\Exceptions\SQLException;
 use bravedave\esse\Exceptions\UnableToSelectDatabase;
 use bravedave\esse\logger;
 use config;
+use mysqli;
 
 class db extends esseDB {
-  protected $mysqli, $dbname;
+  protected null|mysqli $mysqli;
+  protected string $dbname;
 
-  protected static self $_instance = null;
+  protected static ?self $_instance = null;
   protected static int $dbiCount = 0;
 
   static function instance(): ?self {
+
+    $debug = false;
+    // $debug = true;
 
     if (!self::$_instance) {
 
@@ -43,7 +48,7 @@ class db extends esseDB {
         logger::info(sprintf('<db initialized (%s)> %s', self::$dbiCount, __METHOD__));
       }
 
-      logger::debug(sprintf(
+      if ($debug) logger::debug(sprintf(
         '<db initialized (%s,%s,%s,%s)> %s',
         config::$DB_HOST,
         config::$DB_NAME,
@@ -106,7 +111,7 @@ class db extends esseDB {
     return ($this->mysqli->affected_rows);
   }
 
-  public function dump() {
+  public function dump(): void {
     if ($dbR = $this->result(sprintf('SHOW TABLES FROM %s', config::$DB_NAME))) {
       $uID = 0;
       while ($row = $dbR->fetch_row()) {
@@ -149,7 +154,7 @@ class db extends esseDB {
     return $this->mysqli->real_escape_string($s);
   }
 
-  public function fetchFields(string $table) : array {
+  public function fetchFields(string $table): array {
     $res = $this->Q("SELECT * FROM `$table` LIMIT 1");
     return ($res->fetch_fields());
   }
@@ -206,7 +211,7 @@ class db extends esseDB {
     return $ret;
   }
 
-  public function getCharSet() : string {
+  public function getCharSet(): string {
 
     return $this->mysqli->character_set_name();
   }

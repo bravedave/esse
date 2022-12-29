@@ -13,57 +13,67 @@ namespace bravedave\esse\mysql;
 use config;
 use bravedave\esse\dao;
 use bravedave\esse\logger;
+use RuntimeException;
 
 class dbCheck extends dao {
   public $temporary = false;
 
-  protected string $table;
+  protected string $table = '';
   protected string $pk = "id";
   protected array $structure = [];
   protected array $indexs = [];
 
-  function __construct(db $db = null, $table, $pk = "id") {
-    parent::__construct($db);
+  public function __construct(db $db = null, $table, $pk = "id") {
+
+    $this->db = $db;
+    // parent::__construct( $db );
 
     $this->table = $table;
     $this->pk = $pk;
   }
 
-  function defineField($name = "", $type = "varchar", $len = null, $dec = 0, $default = "") {
-    if ($name == "")
-      return (false);
+  public function defineField(string $name = '', string $type = 'varchar', ?int $len = null, int $dec = 0, string $default = ''): void {
 
-    if ($type == "date" && $default == "")
-      $default = "0000-00-00";
-    if ($type == "datetime" && $default == "")
-      $default = "0000-00-00 00:00:00";
-    if (($type == "int" || $type == "bigint" || $type == "double" || $type == "float") && $default == "")
-      $default = "0";
+    if ($name != "") {
 
-    if (is_null($len) || (int)$len < 1) {
-      if (($type == "int")) {
-        $len = 11;
-      } elseif (($type == "varbinary")) {
-        $len = 32;
-      } elseif (($type == "bigint" || $type == "double" || $type == "decimal" || $type == "float")) {
-        $len = 20;
-      } else {
-        $len = 45;  // probably varchar
+      if ($type == "date" && $default == "") {
 
+        $default = "0000-00-00";
+      } elseif ($type == "datetime" && $default == "") {
+
+        $default = "0000-00-00 00:00:00";
+      } elseif (($type == "int" || $type == "bigint" || $type == "double" || $type == "float") && $default == "") {
+
+        $default = "0";
       }
+
+      if (is_null($len) || (int)$len < 1) {
+
+        if (($type == "int")) {
+          $len = 11;
+        } elseif (($type == "varbinary")) {
+
+          $len = 32;
+        } elseif (($type == "bigint" || $type == "double" || $type == "decimal" || $type == "float")) {
+
+          $len = 20;
+        } else {
+
+          $len = 45;  // probably varchar
+        }
+      }
+
+      $this->structure[] = [
+        "name" => $name,
+        "type" => $type,
+        "length" => $len,
+        "decimal" => $dec,
+        "default" => $default
+      ];
     }
-
-    $this->structure[] = [
-      "name" => $name,
-      "type" => $type,
-      "length" => $len,
-      "decimal" => $dec,
-      "default" => $default
-
-    ];
   }
 
-  function defineIndex($key, $field) {
+  public function defineIndex($key, $field): void {
     $this->indexs[] = [
       'key' => $key,
       'field' => $field
@@ -71,7 +81,13 @@ class dbCheck extends dao {
     ];
   }
 
-  function check() {
+  public function check(): void {
+
+    $debug = false;
+    // $debug = true;
+
+    if ($debug) logger::info(sprintf('<%s> %s', $this->table, __METHOD__));
+    if (!$this->table) throw new RuntimeException('table name is empty');
 
     $fields = [$this->pk . " bigint(20) NOT NULL auto_increment"];
     foreach ($this->structure as $fld) {
@@ -278,7 +294,5 @@ class dbCheck extends dao {
         logger::info(sprintf("INDEX created `%s` => %s(%s)", $this->table, $index['key'], $index['field']), 2);
       }
     }
-
-    return true;
   }
 }

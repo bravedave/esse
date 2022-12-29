@@ -21,9 +21,9 @@ class dbCheck {
   protected $indexs = [];
   protected $db;
 
-  function __construct(db $db = null, $table, $pk = "id") {
+  public function __construct(db $db = null, $table, $pk = "id") {
     $this->db = $db;
-    //~ parent::__construct( $db );
+    // parent::__construct( $db );
 
     $this->table = $table;
     $this->pk = $pk;
@@ -38,38 +38,40 @@ class dbCheck {
    * noting that SQLite does not use the decimal,
    * but required for compatibility with MySQL equivalent function
 	 */
-  function defineField($name = "", $type = "TEXT", $dec = 0, $default = "") {
-    if ($name == "")
-      return (false);
+  public function defineField($name = "", $type = "TEXT", $dec = 0, $default = ""): void {
 
-    if (strtolower($type) == 'bigint')
-      $type = 'INTEGER';
-    elseif (in_array(strtolower($type), ['int', 'bigint', 'tinyint']) !== false)
-      $type = 'INTEGER';
-    elseif (in_array(strtolower($type), ['blob', 'mediumblob', 'longblob']) !== false)
-      $type = 'BLOB';
-    elseif (in_array(strtolower($type), ['varchar', 'varbinary', 'mediumtext', 'longtext', 'date', 'datetime']) !== false)
-      $type = 'TEXT';
-    elseif (in_array(strtolower($type), ['float', 'double', 'decimal']) !== false)
-      $type = 'REAL';
+    if ($name != "") {
 
-    $this->structure[] = [
-      'name' => $name,
-      'type' => strtoupper($type),
-      'default' => $default,
-      'decimal' => $dec
-    ];
+      if (strtolower($type) == 'bigint')
+        $type = 'INTEGER';
+      elseif (in_array(strtolower($type), ['int', 'bigint', 'tinyint']) !== false)
+        $type = 'INTEGER';
+      elseif (in_array(strtolower($type), ['blob', 'mediumblob', 'longblob']) !== false)
+        $type = 'BLOB';
+      elseif (in_array(strtolower($type), ['varchar', 'varbinary', 'mediumtext', 'longtext', 'date', 'datetime']) !== false)
+        $type = 'TEXT';
+      elseif (in_array(strtolower($type), ['float', 'double', 'decimal']) !== false)
+        $type = 'REAL';
+
+      $this->structure[] = [
+        'name' => $name,
+        'type' => strtoupper($type),
+        'default' => $default,
+        'decimal' => $dec
+      ];
+    }
   }
 
-  function defineIndex($key, $field) {
+  public function defineIndex($key, $field): void {
+
     $this->indexs[] = [
       'key' => $key,
       'field' => $field
-
     ];
   }
 
-  function check() {
+  public function check() : void {
+
     $fields = [$this->pk . ' INTEGER PRIMARY KEY AUTOINCREMENT'];
     foreach ($this->structure as $fld) {
 
@@ -96,7 +98,6 @@ class dbCheck {
       $this->temporary ? 'TEMPORARY' : '',
       $this->table,
       implode(',', $fields)
-
     );
     //~ print "<pre>" . print_r( $fields, TRUE ) . "</pre>";
     //~ print $sql;
@@ -104,8 +105,7 @@ class dbCheck {
 
     $fieldList = $this->db->fieldList($this->table);
     $fields = [];
-    foreach ($fieldList as $f)
-      $fields[] = $f->name;
+    foreach ($fieldList as $f) $fields[] = $f->name;
 
     foreach ($this->structure as $fld) {
       if (!in_array($fld['name'], $fields)) {
