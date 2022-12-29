@@ -15,7 +15,7 @@ $dbc = db::dbCheck('users');
 $dbc->defineField('name', 'varchar', 100);
 $dbc->defineField('email', 'varchar', 100);
 $dbc->defineField('mobile', 'varchar');
-$dbc->defineField('password', 'varchar');
+$dbc->defineField('password', 'varchar', 100);
 $dbc->defineField('admin', 'tinyint');
 $dbc->defineField('active', 'tinyint');
 $dbc->defineField('created', 'datetime');
