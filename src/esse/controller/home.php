@@ -39,7 +39,7 @@ class home extends controller {
 
     $page->css[] = sprintf('<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/styles/default.min.css">', $version);
 
-    $page->scripts[] = sprintf( '<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/highlight.min.js"></script>', $version);
+    $page->scripts[] = sprintf('<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/%s/highlight.min.js"></script>', $version);
     $page->late[] = '<script>hljs.highlightAll();</script>';
 
     $page
@@ -48,24 +48,32 @@ class home extends controller {
       ->main()->then(fn () => printf('<div class="markdown-body">%s</div>', Parsedown::instance()->text($fc)))
       ->aside()->then(fn () => $this->load('aside'));
   }
-  // ->main()->then(fn () => $this->load('about'))
 
   function images($file = ''): void {
 
     if ($file) {
 
-      $exts = ['jpg', 'png', 'svg'];
-      $fi = new SplFileInfo($file);
-      if (in_array($fi->getExtension(), $exts)) {
+      if ('application.drawio.svg' == $file) {
 
-        $fileName = $fi->getBasename('.' . $fi->getExtension());
-        if ($path = $this->getView($fileName, $exts)) {
+        /**
+         * special case for compatibility with Github
+         */
+        response::serve(realpath(__DIR__ . '/../../images/' . $file));
+      } else {
 
-          response::serve($path);
-        } else {
+        $exts = ['jpg', 'png', 'svg'];
+        $fi = new SplFileInfo($file);
+        if (in_array($fi->getExtension(), $exts)) {
 
-          logger::info(sprintf('<%s> %s', $fileName, __METHOD__));
-          logger::info(sprintf('<not found : %s> %s', $file, __METHOD__));
+          $fileName = $fi->getBasename('.' . $fi->getExtension());
+          if ($path = $this->getView($fileName, $exts)) {
+
+            response::serve($path);
+          } else {
+
+            logger::info(sprintf('<%s> %s', $fileName, __METHOD__));
+            logger::info(sprintf('<not found : %s> %s', $file, __METHOD__));
+          }
         }
       }
     }
