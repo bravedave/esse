@@ -1,4 +1,21 @@
-# <?= config::$WEBNAME ?>
+<?php
+/*
+ * David Bray
+ * BrayWorth Pty Ltd
+ * e. david@brayworth.com.au
+ *
+ * MIT License
+ *
+*/
+
+namespace home;
+
+use config;
+use strings;
+
+?>
+
+<h1><?= config::$WEBNAME ?></h1>
 <h4 class="text-muted mb-4 fst-italic"><?= config::$SLOGAN ?></h4>
 
 <div class="row gw-2">
