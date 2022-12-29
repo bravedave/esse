@@ -64,26 +64,25 @@ class application {
       ]);
     }
 
+    /**
+     * Quiet Security - some actions are protected
+     * from outside calling, don't broadcast the error
+     */
+    $_protectedActions = [
+      '__construct',
+      '__destruct',
+      'application',
+      'authorize',
+      'before',
+      'load'
+    ];
+
     if (class_exists($controller)) {
 
       $this->route = request::controller();
       $ctrl = new $controller($this->paths);
 
       if (!config::$AUTHENTICATION || !$ctrl->requiresAuthentication() || currentUser::isValid()) {
-
-        // logger::debug(sprintf('<valid user : %s> %s', currentUser::id(), __METHOD__));
-        /**
-         * Quiet Security - some actions are protected
-         * from outside calling, don't broadcast the error
-         */
-        $_protectedActions = [
-          '__construct',
-          '__destruct',
-          'application',
-          'authorize',
-          'before',
-          'load'
-        ];
 
         $method = request::method();
         if (in_array(strtolower($method), $_protectedActions)) {
@@ -92,51 +91,17 @@ class application {
           $method = 'index';
         }
 
-        if (method_exists($ctrl, $method = request::method())) {
-
-          if ((new ReflectionMethod($ctrl, $method))->isPublic()) {
-
-            if ($p1 = request::param1()) {
-
-              if ($p2 = request::param2()) {
-
-                $ctrl->{$method}($p1, $p2);
-              } else {
-
-                $ctrl->{$method}($p1);
-              }
-            } else {
-
-              $ctrl->{$method}();
-            }
-          } else {
-
-            logger::info(sprintf('<%s method is not public in %s> %s', $method, $controller, __METHOD__));
-            throw new RuntimeException('illegal access');
-          }
-        } elseif ($method) {
-
-          if ($p1 = request::param1()) {
-
-            if ($p2 = request::param2()) {
-
-              $ctrl->index($method, $p1, $p2);
-            } else {
-
-              $ctrl->index($method, $p1);
-            }
-          } else {
-
-            $ctrl->index($method);
-          }
-        } else {
-
-          $ctrl->index();
-        }
+        $ctrl([
+          $method,
+          request::param1(),
+          request::param2()
+        ]);
       } else {
 
-        // they are not valid,
-        // if the controller requres authentication bump them to logon
+        /**
+         * they are not valid,
+         * if the controller requres authentication bump them to logon
+         */
         $ctrl = new controller\logon($this->paths);
         $ctrl->index();
         logger::info(sprintf('<invalid user> <%s> %s', $controller, __METHOD__));
@@ -144,7 +109,62 @@ class application {
       }
     } else {
 
-      printf('%s not found', $controller);
+      /**
+       * fall back to the home controller to look
+       * for a method of the controllers name
+       */
+      if ($method = request::controller()) {
+
+        if (in_array(strtolower($method), $_protectedActions)) {
+
+          printf('%s not found', $controller);
+        } else {
+
+          $controller = implode('\\', [
+            'home',
+            'controller'
+          ]);
+
+          if (!class_exists($controller)) {
+
+            // esse controller
+            $controller = implode('\\', [
+              __NAMESPACE__,
+              'home',
+              request::controller()
+            ]);
+          }
+
+          if (class_exists($controller)) {  // presumably it does, you could be fallen back to esse\controllers\home
+
+            $this->route = 'home';
+            $ctrl = new $controller($this->paths);
+
+            if (!config::$AUTHENTICATION || !$ctrl->requiresAuthentication() || currentUser::isValid()) {
+
+              $params = [$method];
+              if ($p = request::method()) $params[] = $p;
+              if ($p = request::param1()) $params[] = $p;
+              if ($p = request::param2()) $params[] = $p;
+
+              $ctrl($params);
+            } else {
+
+              /**
+               * they are not valid,
+               * if the controller requres authentication bump them to logon
+               */
+              $ctrl = new controller\logon($this->paths);
+              $ctrl->index();
+              logger::info(sprintf('<invalid user> <%s> %s', $controller, __METHOD__));
+              return; // finito
+            }
+          }
+        }
+      } else {
+
+        printf('%s not found', $controller);
+      }
     }
 
     // logger::debug('exit application : ' . __METHOD__);
