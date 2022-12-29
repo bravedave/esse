@@ -78,7 +78,7 @@ class _dbinfo extends dao {
     return $_version;
   }
 
-  function dump($verbose = true) {
+  function dump($verbose = true) : void {
 
     $this->check();
     if ((bool)$verbose) $this->db->dump();

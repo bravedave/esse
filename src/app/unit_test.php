@@ -14,7 +14,7 @@ class unit_test extends application {
 
   protected bool $service = true;
 
-  protected static function _sendmail() {
+  protected static function _sendmail(): void {
 
     $address = sendmail::address(config::$SUPPORT_EMAIL, config::$SUPPORT_NAME);
 
@@ -31,7 +31,7 @@ class unit_test extends application {
     sendmail::send($email);
   }
 
-  public static function sendmail() {
+  public static function sendmail(): void {
 
     $app = new self(self::startDir());
     $app->_sendmail();

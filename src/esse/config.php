@@ -161,7 +161,7 @@ abstract class config {
     return self::$_dataPath;
   }
 
-  public static function dbCachePrefix() {
+  public static function dbCachePrefix(): string {
 
     if (self::$DB_CACHE_PREFIX) {
 
@@ -170,6 +170,7 @@ abstract class config {
 
       return str_replace('.', '_', self::$DB_HOST . '_' . self::$DB_NAME);
     } else {
+
       /**
        * it's probably sqlite, so we need a unique prefix for this database
        *
@@ -180,7 +181,6 @@ abstract class config {
       $path = implode(DIRECTORY_SEPARATOR, [
         self::dataPath(),
         'dbCachePrefix.json'
-
       ]);
 
       if (\file_exists($path)) {
@@ -337,11 +337,11 @@ abstract class config {
           "CREATE DATABASE IF NOT EXISTS `%s`;\n" .
             "GRANT ALL ON `%s`.* TO '%s'@'%s' IDENTIFIED BY '%s';\n" .
             "FLUSH PRIVILEGES;",
-            self::$DB_NAME,
-            self::$DB_NAME,
-            self::$DB_USER,
-            request::getServerIP(),
-            self::$DB_PASS
+          self::$DB_NAME,
+          self::$DB_NAME,
+          self::$DB_USER,
+          request::getServerIP(),
+          self::$DB_PASS
         ));
       }
     }

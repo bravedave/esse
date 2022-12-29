@@ -18,10 +18,10 @@ use config, ZipArchive;
 use SQLite3;
 
 class db extends esseDB {
-  protected ?SQLite3 $_db = null;
-  protected ?string $_path = null;
+  protected null|SQLite3 $_db;
+  protected string $_path;
 
-  protected static ?self $_instance = null;
+  protected static null|self $_instance = null;
 
   static function instance(): self {
 

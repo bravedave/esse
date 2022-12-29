@@ -15,7 +15,7 @@ class config extends \config {  // noting: config extends global config classes
 
   const label = 'Todo';  // general label for application
 
-  static function todo_checkdatabase() {
+  static function todo_checkdatabase() : void {
 
     if (self::checkDBconfigured()) {
 
