@@ -28,7 +28,8 @@
     "ext-posix": "*",
     "matthiasmullie/minify": "*",
     "monolog/monolog": "<3",
-    "symfony/mailer": "^6.2"
+    "symfony/mailer": "^6.2",
+    "erusev/parsedown": "^1.7"
   },
   "require-dev": {
     "ext-apcu": "*",

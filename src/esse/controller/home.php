@@ -15,6 +15,7 @@ use bravedave\esse\page;
 use bravedave\esse\response;
 use config, controller;
 use finfo;
+use Parsedown;
 use SplFileInfo;
 
 /**
@@ -29,12 +30,16 @@ class home extends controller {
 
     $this->title = config::$WEBNAME;
 
+    $readme = realpath(__DIR__ . '/../../../readme.md');
+    $fc = file_get_contents($readme);
+
     (page::bootstrap())
       ->head($this->title)
       ->body()->then(fn () => $this->load('nav'))
-      ->main()->then(fn () => $this->load('about'))
+      ->main()->then(fn () => printf('<div class="markdown-body">%s</div>', Parsedown::instance()->text($fc)))
       ->aside()->then(fn () => $this->load('aside'));
   }
+  // ->main()->then(fn () => $this->load('about'))
 
   function images($file = ''): void {
 

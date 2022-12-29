@@ -22,6 +22,7 @@ abstract class config {
 
   const cssfiles = [
     __DIR__ . '/css/_esse_.css',
+    __DIR__ . '/css/_esse_.markdown.css',
   ];
 
   const jsfiles = [

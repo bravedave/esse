@@ -10,6 +10,7 @@
 
 namespace bravedave\esse;
 
+use Parsedown;
 use ReflectionMethod;
 use RuntimeException;
 
@@ -46,18 +47,25 @@ class controller {
 
     if ($path = $this->getView($view)) {
 
-      require $path;
+      if (strings::endswith($path, '.md')) {
+
+        $fc = file_get_contents($path);
+        printf('<div class="markdown-body">%s</div>', Parsedown::instance()->text($fc));
+      } else {
+
+        require $path;
+      }
     } else {
 
       printf('view %s not found', $view);
     }
   }
 
-  protected function getView(string $view, array $extensions = []): string {
+  protected function getView(string $view, array $extensions = ['php', 'md']): string {
 
     foreach ($this->viewPath as $path) {
 
-      if (file_exists($p = sprintf('%s/%s.php', $path, $view))) return $p;
+      // if (file_exists($p = sprintf('%s/%s.php', $path, $view))) return $p;
       foreach ($extensions as $ext) {
 
         if (file_exists($p = sprintf('%s/%s.%s', $path, $view, $ext))) return $p;
@@ -66,7 +74,7 @@ class controller {
 
     foreach ($this->paths as $path) {
 
-      if (file_exists($p = sprintf('%s/views/%s.php', $path, $view))) return $p;
+      // if (file_exists($p = sprintf('%s/views/%s.php', $path, $view))) return $p;
       foreach ($extensions as $ext) {
 
         if (file_exists($p = sprintf('%s/views/%s.%s', $path, $view, $ext))) return $p;

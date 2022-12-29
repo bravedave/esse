@@ -58,15 +58,15 @@ class controller extends \controller {
 
         if ($dto = (new dao\todo)->getByID($id)) {
 
-          Json::ack($action)
+          json::ack($action)
             ->add('data', $dto);
         } else {
 
-          Json::nak($action);
+          json::nak($action);
         }
       } else {
 
-        Json::nak($action);
+        json::nak($action);
       }
     } elseif ('get-matrix' == $action) {
       /*
@@ -81,7 +81,7 @@ class controller extends \controller {
             });
         })(_esse_);
        */
-      Json::ack($action)
+      json::ack($action)
         ->add('data', (new dao\todo)->getMatrix());
     } elseif ('todo-save' == $action) {
 
@@ -118,7 +118,7 @@ class controller extends \controller {
     }
   }
 
-  public function edit($id = 0) {
+  public function edit($id = 0) : void {
 
     $this->data = (object)[
       'title' => $this->title = config::label,
