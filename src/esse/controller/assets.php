@@ -12,8 +12,10 @@ namespace bravedave\esse\controller;
 
 use bravedave\esse\cssmin;
 use bravedave\esse\jslib;
+use bravedave\esse\json;
 use bravedave\esse\logger;
 use bravedave\esse\response;
+use bravedave\esse\url;
 use config, controller;
 
 /**
@@ -113,6 +115,14 @@ class assets extends controller {
         'jsFiles' => config::jsfiles,
         'libFile' => config::tempdir() . '_esse_.js'
       ]);
+    } elseif ('dopo.js' == $lib) {
+
+      response::javascript_headers(time(), time() - 3600);
+      printf('(_ => {
+        _.url.root = %s;
+      })(_esse_)',
+      json_encode(url::$ROOT, JSON_UNESCAPED_SLASHES)
+    );
     } else {
 
       logger::info(sprintf('<%s> %s', $lib, __METHOD__));

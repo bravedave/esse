@@ -46,6 +46,7 @@ class page {
     $p->css[] = sprintf('<link rel="stylesheet" href="%s">', strings::url('assets/css/esse.css'));
 
     $p->late[] = sprintf('<script src="%s"></script>', strings::url('assets/bootstrap/bootstrap.js'));
+    $p->late[] = sprintf('<script src="%s"></script>', strings::url('assets/js/dopo.js'));
 
     return $p;
   }

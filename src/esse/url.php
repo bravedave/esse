@@ -14,6 +14,7 @@ use config;
 
 abstract class url {
   static public string $URL;
+  static public string $ROOT = '';
   static public string $HOME;
   static public string $PROTOCOL;
 
@@ -83,6 +84,7 @@ abstract class url {
       }
 
       $url = sprintf('//%s%s%s/', $server, $port, $script);
+      self::$ROOT = $script;
 
       if (config::use_full_url) {
 
