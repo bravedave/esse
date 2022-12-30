@@ -315,8 +315,8 @@ abstract class config {
 
         $a = [
           'authentication' => true,
-          'crypt_iv' => random_bytes(16),
-          'crypt_key' => random_bytes(24),
+          'crypt_iv' => strings::random_string(16),
+          'crypt_key' => strings::random_string(24),
           'db_type' => 'sqlite',
           'db_host' => self::$DB_HOST,
           'db_name' => self::$DB_NAME,
