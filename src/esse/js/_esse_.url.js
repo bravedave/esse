@@ -12,7 +12,7 @@
   _.url = path => {
 
     let url = new URL(window.location.href);
-    url.pathname = _.url.root + !!path ? path : '';
+    url.pathname = !!_.url.root ? _.url.root + '/' : '' + !!path ? path : '';
 
     return url.href;
   }
