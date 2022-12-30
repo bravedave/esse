@@ -45,8 +45,7 @@ class application {
 
       response::serve(__DIR__ . '/resource/favicon.ico');
       return;
-    }
-    elseif ('application.drawio.svg' == request::controller()) {
+    } elseif ('application.drawio.svg' == request::controller()) {
 
       /**
        * special case for compatibility with Github
@@ -201,6 +200,13 @@ class application {
     return isset(self::$instance)  ?
       self::$instance->route :
       '';
+  }
+
+  public static function isService(): bool {
+
+    return isset(self::$instance)  ?
+      self::$instance->service :
+      false;
   }
 
   protected static $_loaded_fallback = false;
