@@ -16,11 +16,29 @@ class request {
 
   protected function __construct() {
 
+    $debug = false;
+    // $debug = true;
+
     $dto = new dto\request;
 
     $dto->uri = trim($_SERVER['REQUEST_URI'], '/');
 
     $uri = filter_var($dto->uri, FILTER_SANITIZE_URL);
+    $software = $_SERVER['SERVER_SOFTWARE'] ?? '';
+
+    if (!preg_match('@^PHP@', $software)) {
+
+      if (isset($_SERVER['SCRIPT_NAME'])) {
+
+        if ($script = ltrim(dirname($_SERVER['SCRIPT_NAME']), '/')) {
+
+          if ($debug) logger::debug(sprintf('<script %s> %s', $script, __METHOD__));
+          $uri = ltrim(preg_replace('/^' . preg_quote($script, '/') . '/', '', $uri), '/');
+        }
+      }
+    }
+
+    if ($debug) logger::debug(sprintf('<uri %s> %s', $uri, __METHOD__));
     $uri = preg_replace('/\?(.*)$/', '', $uri);
     $segs = $uri ? explode('/', $uri) : [];
 
@@ -28,6 +46,8 @@ class request {
     if ($segs) $dto->method = array_shift($segs);
     if ($segs) $dto->param1 = array_shift($segs);
     if ($segs) $dto->param2 = array_shift($segs);
+
+    if ($debug) logger::debug(sprintf('<%s> <%s> %s', $dto->controller, $dto->method, __METHOD__));
 
     // $dto->get = $_SERVER
     $dto->post = $_POST;

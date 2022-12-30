@@ -38,32 +38,30 @@ abstract class url {
     return self::tostring($url, $protocol);
   }
 
-  static function init() {
+  static function initialize() {
     if (isset(self::$URL)) return;
 
-    if (!(defined('URL'))) {
+    $url = '';
+    $software = $_SERVER['SERVER_SOFTWARE'] ?? '';
 
-      if (isset($_SERVER['SERVER_SOFTWARE'])) {
+    if (preg_match('@^PHP@', $software)) {
 
-        if (preg_match('@^PHP@', $_SERVER['SERVER_SOFTWARE'])) {
+      if (config::use_full_url) {
 
-          if (config::use_full_url) {
+        if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != 80) {
 
-            if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != 80)
+          $url = sprintf('//localhost:%s/', $_SERVER['SERVER_PORT']);
+        } else {
 
-              define('URL', sprintf('//localhost:%s/', $_SERVER['SERVER_PORT']));
-            else
-
-              define('URL', '//localhost/');
-          } else {
-
-            define('URL', '/');
-          }
+          $url = '//localhost/';
         }
+      } else {
+
+        $url = '/';
       }
     }
 
-    if (!(defined('URL') && defined('URL_APPLICATION'))) {
+    if (!$url) {
 
       $server = strtolower($_SERVER['SERVER_NAME'] ?? '');
       $server = preg_replace('@\/$@', '', $server);
@@ -84,25 +82,17 @@ abstract class url {
         }
       }
 
-      if (!(defined('URL_APPLICATION'))) define('URL_APPLICATION', sprintf('//%s%s%s/', $server, $port, $script));
+      $url = sprintf('//%s%s%s/', $server, $port, $script);
 
-      if (!(defined('URL'))) {
+      if (config::use_full_url) {
 
-        if (config::use_full_url) {
-
-          $script = preg_replace('@/application$@', '', $script);
-          define('URL', sprintf('//%s%s%s/', $server, $port, $script));
-        } else {
-
-          define('URL', $script . '/');
-        }
+        $script = preg_replace('@/application$@', '', $script);
+        $url = sprintf('//%s%s%s/', $server, $port, $script);
       }
     }
 
-    self::$URL = URL;
-    self::$HOME = URL;
-
-    // logger::info(self::$URL);
+    self::$URL = $url;
+    self::$HOME = $url;
 
     $protocol = (
       ($_SERVER['HTTPS'] ?? 'off') !== 'off'
@@ -114,4 +104,4 @@ abstract class url {
   }
 }
 
-url::init();
+url::initialize();
