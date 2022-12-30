@@ -18,7 +18,6 @@ class user {
   public static function getID(): int {
 
     return (int)session::get('user_id');
-    return 0;
   }
 
   public static function setID(int $id): void {
