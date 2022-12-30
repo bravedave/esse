@@ -89,7 +89,7 @@ class page {
 
     if (!$this->_aside) return $this;
 
-    print "\n</aside>\n";
+    print "\n\t\t</aside>\n";
 
     $this->_aside = false;
     return $this;
@@ -136,7 +136,7 @@ class page {
 
     if (!$this->_main) return $this;
 
-    print "\n</main>\n";
+    print "\n\t\t</main>\n";
 
     $this->_main = false;
     return $this;
@@ -155,7 +155,7 @@ class page {
       ->closemain()
       ->closeaside();
 
-    print "\n</div>\n</div>\n";
+    print "\n\t</div></div>\n";
 
     $this->_mainrow = false;
     return $this;
@@ -220,7 +220,7 @@ class page {
       ->mainrow()
       ->closemain();
 
-    print "<aside class=\"col-md-3\">\n";
+    print "\t\t<aside class=\"col-md-3\">\n";
 
     $this->_aside = true;
     return $this;
@@ -241,7 +241,7 @@ class page {
       ->mainrow()
       ->closeaside();
 
-    print "<main class=\"col\">\n";
+    print "\t\t<main class=\"col\">\n";
 
     $this->_main = true;
     return $this;
@@ -259,7 +259,7 @@ class page {
 
     $this->body();
 
-    print "<div class=\"container-fluid\"><div class=\"row\">\n";
+    print "\n\t<div class=\"container-fluid\"><div class=\"row\">\n";
 
     $this->_mainrow = true;
     return $this;
