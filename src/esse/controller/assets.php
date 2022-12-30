@@ -102,7 +102,7 @@ class assets extends controller {
 
   public function jquery() {
 
-    response::serve(__DIR__ . '/../js/jquery-3.6.1.min.js');
+    response::serve(__DIR__ . '/../js/jquery-3.6.3.min.js');
   }
 
   public function js($lib = 'esse.js'): void {
