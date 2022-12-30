@@ -41,6 +41,10 @@ abstract class config {
   static bool $AUTHENTICATION = true;
   static bool $CONTENT_SECURITY_ENABLED = true;
 
+  static string $CIPHER = 'aes-128-cbc';
+  static string $CRYPT_IV = ''; // 8 bit IV
+  static string $CRYPT_KEY = ''; // 24 bit Key
+
   static string $DATE_FORMAT = 'Y-m-d';
   static string $DATE_FORMAT_LONG = 'D M d Y';
   static string $DATETIME_FORMAT = 'Y-m-d g:ia';
@@ -234,6 +238,8 @@ abstract class config {
     if (file_exists($path)) {
       $_a = [
         'authentication' => self::$AUTHENTICATION,
+        'crypt_iv' => self::$CRYPT_IV,
+        'crypt_key' => self::$CRYPT_KEY,
         'db_type' => self::$DB_TYPE,
         'db_host' => self::$DB_HOST,
         'db_name' => self::$DB_NAME,
@@ -261,6 +267,10 @@ abstract class config {
       $a = (object)array_merge($_a, (array)json_decode(file_get_contents($path)));
 
       self::$AUTHENTICATION = $a->authentication;
+
+      self::$CRYPT_IV = $a->crypt_iv;
+      self::$CRYPT_KEY = $a->crypt_key;
+
       self::$DB_TYPE = $a->db_type;
       self::$DB_HOST = $a->db_host;
       self::$DB_NAME = $a->db_name;
@@ -305,6 +315,8 @@ abstract class config {
 
         $a = [
           'authentication' => true,
+          'crypt_iv' => random_bytes(16),
+          'crypt_key' => random_bytes(24),
           'db_type' => 'sqlite',
           'db_host' => self::$DB_HOST,
           'db_name' => self::$DB_NAME,
