@@ -27,6 +27,7 @@ abstract class config {
 
   const jsfiles = [
     __DIR__ . '/js/_esse_.js',
+    __DIR__ . '/js/_esse_.browser.js',
     __DIR__ . '/js/_esse_.get.js',
     __DIR__ . '/js/_esse_.growl.js',
     __DIR__ . '/js/_esse_.randomString.js',
