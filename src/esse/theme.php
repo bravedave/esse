@@ -12,18 +12,18 @@ namespace bravedave\esse;
 
 class theme {
 
-	static function navbar( $params = []) {
+	static function navbar(array $params = []): string {
 
 		$options = array_merge([
-      'color' => 'navbar-light bg-light',
+			'color' => 'navbar-light bg-light',
 			'defaults' => 'navbar navbar-expand-md d-print-none',
 			'sticky' => 'sticky-top',
 		], $params);
 
-    return implode( ' ', $options);
+		return implode(' ', $options);
 	}
 
-	static function modalHeader() {
+	static function modalHeader(): string {
 
 		return 'text-white bg-primary';
 	}
