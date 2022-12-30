@@ -19,27 +19,38 @@ class cache {
   protected $_cache;
   protected $ttl = 60;
 
-  protected function __construct(string $collection) {
-    if (config::$DB_CACHE_DEBUG) logger::info(__METHOD__);
+  protected function __construct() {
+    if (config::$DB_CACHE_DEBUG) logger::debug(__METHOD__);
 
     $this->ttl = config::$DB_CACHE_TTL;
 
     // create Scrapbook KeyValueStore object
-    $apc = new Apc;
-    $this->_cache = $collection ? $apc->getCollection($collection) : $apc;
-    // $this->_cache = $apc;
+    $this->_cache = new Apc;
   }
 
-  static function instance(string $collection = ''): self {
+  /**
+   * create a cache instance
+   *
+   * @return self
+   */
+  static function instance(): self {
 
-    if (!self::$_instance) self::$_instance = new self($collection);
+    if (!self::$_instance) self::$_instance = new self;
     return self::$_instance;
   }
 
-  public function get(string $key) : mixed {
+  /**
+   * get a cache value
+   *
+   * @param string $key the key to retrieve
+   *
+   * @return mixed
+   */
+  public function get(string $key): mixed {
+
     if ($res = $this->_cache->get($key)) {
 
-      if (config::$DB_CACHE_DEBUG) logger::info(sprintf('<get %s (hit)> %s', $key, __METHOD__));
+      if (config::$DB_CACHE_DEBUG) logger::debug(sprintf('<get %s (hit)> %s', $key, __METHOD__));
     } elseif (config::$DB_CACHE_DEBUG) {
 
       logger::info(sprintf('<get %s (miss)> %s', $key, __METHOD__));
@@ -48,43 +59,70 @@ class cache {
     return $res;
   }
 
-  public function set(string $key, $value, $ttl = null): void {
+  /**
+   * set a cache value
+   *
+   * @param string $key the key to set
+   *
+   * @param mixed $value the value to set
+   *
+   * @param int $ttl
+   *
+   * @return void
+   */
+  public function set(string $key, mixed $value, int $ttl = 0): void {
 
     if (!$ttl) $ttl = $this->ttl;
 
     if ($this->_cache->set($key, $value, $ttl)) {
 
-      if (config::$DB_CACHE_DEBUG) logger::info(sprintf('<set %s> %s', $key, __METHOD__));
+      if (config::$DB_CACHE_DEBUG) logger::debug(sprintf('<set %s> %s', $key, __METHOD__));
     }
   }
 
-  public function delete(string $key, $wildcard = false): bool {
+  /**
+   * delete a cache value
+   *
+   * @param string $key the key to delete
+   *
+   * @param bool $wildcard use wilcard matching to delete many values
+   *
+   * @return bool
+   */
+  public function delete(string $key, bool $wildcard = false): bool {
 
     if ($wildcard) {
 
-      logger::info( sprintf('<do we need this ?> %s', __METHOD__));
-
-      if (config::$DB_CACHE_DEBUG) logger::info(sprintf('<wildard delete %s> %s', $key, __METHOD__));
-
       $cachedKeys = new APCUIterator($key);
       $count = 0;
+      $found = 0;
       foreach ($cachedKeys as $_key) {
 
-        if (config::$DB_CACHE_DEBUG) logger::info(sprintf('<wildard delete %s> <%s> %s', $key, $_key['key'], __METHOD__));
+        $found++;
+        if (config::$DB_CACHE_DEBUG) logger::debug(sprintf('<wildard delete %s> <%s> %s', $key, $_key['key'], __METHOD__));
         if ($this->_cache->delete($_key['key'])) $count++;
       }
 
-      return $count > 0;
+      if (config::$DB_CACHE_DEBUG && !$found) logger::debug(sprintf('<wildard delete %s> <nothing found> %s', $key, __METHOD__));
+
+      return $found == $count;
     } else {
 
-      if (config::$DB_CACHE_DEBUG) logger::info(sprintf('<delete %s> %s', $key, __METHOD__));
+      if (config::$DB_CACHE_DEBUG) logger::debug(sprintf('<delete %s> %s', $key, __METHOD__));
       return $this->_cache->delete($key);
     }
+
+    return false;
   }
 
+  /**
+   * flush the cache
+   *
+   * @return void
+   */
   public function flush(): void {
 
-    if (config::$DB_CACHE_DEBUG || \config::$DB_CACHE_DEBUG_FLUSH) logger::info(sprintf('<flush> : %s', __METHOD__));
+    if (config::$DB_CACHE_DEBUG || \config::$DB_CACHE_DEBUG_FLUSH) logger::debug(sprintf('<flush> : %s', __METHOD__));
     $this->_cache->flush();
   }
 }

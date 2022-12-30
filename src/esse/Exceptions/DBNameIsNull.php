@@ -12,4 +12,5 @@ namespace bravedave\esse\Exceptions;
 
 use Exception;
 
-class DBNameIsNull extends Exception {}
+class DBNameIsNull extends Exception {
+}

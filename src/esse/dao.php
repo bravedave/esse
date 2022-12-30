@@ -90,6 +90,11 @@ abstract class dao {
     }
   }
 
+  protected function cacheKey_delete(int $id, string $field = ''): string {
+
+    return sprintf('/%s/', $this->cacheKey($id, $field));
+  }
+
   protected function cachePrefix(): string {
 
     if ($this->_db_cache_prefix) return config::dbCachePrefix() . $this->_db_cache_prefix;
@@ -174,8 +179,8 @@ abstract class dao {
 
     if ($cache = $this->cache()) {
 
-      $key = $this->cacheKey($id);
-      if (!$cache->delete($key)) logger::debug(sprintf('<failed to delete %s> %s', $key, __METHOD__));
+      $key = $this->cacheKey_delete($id);
+      if (!$cache->delete($key, $wildcard = true)) logger::debug(sprintf('<failed to delete %s> %s', $key, __METHOD__));
     }
   }
 

@@ -19,6 +19,6 @@ class DatapathNotFound extends Exception {
     logger::info(sprintf('please create a writable data folder : %s', $message));
 
     // make sure everything is assigned properly
-    parent::__construct($this->_text, $code, $previous);
+    parent::__construct($message, $code, $previous);
   }
 }
