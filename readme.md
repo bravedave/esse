@@ -80,6 +80,7 @@ dive into the app folder and build your app ! etc .. etc..
 ### Credits:
 
 * [Bootstrap](https://getbootstrap.com)
+* [JQuery](https://jquery.com)
 * [Monolog](https://seldaek.github.io/monolog/)
 * [Matthias Mullie minify and scrapbook](https://github.com/matthiasmullie)
 * [Symfony Mailer](https://github.com/symfony/mailer)
