@@ -72,8 +72,6 @@ class page {
       ->closehead()
       ->closebody();
 
-    array_walk($this->late, fn ($late) => printf("\t%s\n", $late));
-
     $this->_open = false;
     print "\n</html>\n";
 
@@ -105,6 +103,8 @@ class page {
     if (!$this->_body) return $this;
 
     $this->closemainrow();
+
+    array_walk($this->late, fn ($late) => printf("\t%s\n", $late));
 
     print "\n</body>\n";
 
