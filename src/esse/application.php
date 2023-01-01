@@ -41,17 +41,18 @@ class application {
 
     if ($this->service) return; // this is being called from the command line
 
-    if ('favicon.ico' == request::controller()) {
+    $systemFiles = [
+      'favicon.ico' => __DIR__ . '/resource/favicon.ico',
+      'application.drawio.svg' => __DIR__ . '/../../application.drawio.svg'
+    ];
 
-      response::serve(__DIR__ . '/resource/favicon.ico');
-      return;
-    } elseif ('application.drawio.svg' == request::controller()) {
+    if ($controller = request::controller()) {
 
-      /**
-       * special case for compatibility with Github
-       */
-      response::serve(__DIR__ . '/../../application.drawio.svg');
-      return;
+      if ($systemFiles[$controller] ?? false) {
+
+        response::serve($systemFiles[$controller]);
+        return;
+      }
     }
 
     $controller = implode('\\', [

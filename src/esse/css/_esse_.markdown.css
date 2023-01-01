@@ -7,7 +7,9 @@
 
 */
 
-.markdown-body .highlight pre, .markdown-body pre {
+.markdown-body .highlight pre,
+.markdown-body pre {
+    background: #f1f1f1;
     border-radius: 3px;
     font-size: 85%;
     line-height: 1.45;
@@ -15,7 +17,8 @@
     padding: 16px;
 }
 
-.markdown-body pre code, .markdown-body pre tt {
+.markdown-body pre code,
+.markdown-body pre tt {
     background-color: initial;
     border: 0;
     display: inline;
@@ -28,7 +31,7 @@
 }
 
 .markdown-body pre>code {
-    background: #f1f1f1;
+    background: inherit;
     border: 0;
     font-size: 100%;
     margin: 0;
@@ -38,8 +41,7 @@
 }
 
 .markdown-body table {
-    width : 100%
-
+    width: 100%
 }
 
 .markdown-body table thead th,
@@ -49,7 +51,7 @@
 
 }
 
-.markdown-body > blockquote {
+.markdown-body>blockquote {
     border-left: 3px solid #eee;
     padding-left: 1em;
     margin-left: 2em;

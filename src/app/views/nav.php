@@ -12,7 +12,7 @@ namespace bravedave\esse;
 
 use strings;  ?>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-gradient-navbar">
+<nav class="navbar navbar-expand-md navbar-dark bg-gradient-navbar sticky-top">
 
   <div class="container-fluid">
 

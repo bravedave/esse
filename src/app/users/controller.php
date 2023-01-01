@@ -24,7 +24,8 @@ class controller extends \controller {
       ->head($this->title)
       ->body()->then(fn () => $this->load('nav'))
       ->main()->then(fn () => $this->load('matrix'))
-      ->aside()->then(fn () => $this->load('aside'));
+      ->aside()->then(fn () => $this->load('aside'))
+      ->footer()->then(fn () => $this->load('footer'));
   }
 
   protected function before(): void {

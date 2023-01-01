@@ -54,6 +54,7 @@ composer u
 ```
 
 3. install a sample application
+
 ```bash
 mkdir src
 cp -r vendor/bravedave/esse/src/app src/app

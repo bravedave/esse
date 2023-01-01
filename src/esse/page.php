@@ -227,6 +227,21 @@ class page {
   }
 
   /**
+   * prepare for a footer element,
+   *  creates a body if required
+   *  closes the mainrow element if it is open
+   *
+   * @return page a page control that can be chained
+   */
+  public function footer(): self {
+
+    $this->body()
+      ->closemainrow();
+
+    return $this;
+  }
+
+  /**
    * open the head element,
    *  creates a body element if required
    *  closes the aside element if it is open
