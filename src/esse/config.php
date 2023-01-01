@@ -372,6 +372,67 @@ abstract class config {
     }
   }
 
+  protected static $_options = [];
+
+  protected static function optionsPath(): string {
+    return implode(DIRECTORY_SEPARATOR, [
+      self::dataPath(),
+      'esse-options.json'
+    ]);
+  }
+
+  public static function option(string $key, null|string $val = null): string {
+    $debug = false;
+    // $debug = true;
+
+    if (!self::$_options) {
+
+      if (file_exists($config = self::optionsPath())) {
+
+        self::$_options = (array)json_decode(file_get_contents($config));
+      }
+    }
+
+    $ret = '';
+    if (self::$_options) {
+
+      /* return the existing value */
+      if (isset(self::$_options[$key])) {
+
+        $ret = (string)self::$_options[$key];
+        if ($debug) logger::debug(sprintf('retrieve option value : %s = %s', $key, $ret));
+      } else {
+
+        if ($debug) logger::debug(sprintf('retrieve option value (default - not set) : %s = %s', $key, $ret));
+      }
+    } else {
+
+      if ($debug) logger::debug(sprintf('retrieve option value (null): %s = %s', $key, $ret));
+    }
+
+    if (!is_null($val)) {
+
+      /* writer */
+      if ((string)$val == '') {
+
+        if (isset(self::$_options[$key])) unset(self::$_options[$key]);
+      } else {
+
+        self::$_options[$key] = (string)$val;
+      }
+
+      file_put_contents(
+        self::optionsPath(),
+        json_encode(
+          self::$_options,
+          JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+        )
+      );
+    }
+
+    return ($ret);
+  }
+
   /**
    * return a writable path with a trailing slash
    */

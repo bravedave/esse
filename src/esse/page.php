@@ -10,7 +10,7 @@
 
 namespace bravedave\esse;
 
-use Closure;
+use Closure, strings;
 
 /**
  * a class to control the

@@ -96,7 +96,7 @@ abstract class useragent {
 		if (self::isChrome()) {
 
 			if (self::version() > 60) {
-				// sys::logger( sprintf( 'Valid Chrome: %s : %s', self::version(), self::$_useragent));
+				// logger::info( sprintf( 'Valid Chrome: %s : %s', self::version(), self::$_useragent));
 				return true;
 			}
 
@@ -115,7 +115,7 @@ abstract class useragent {
 
 			if (self::version() > 50) {
 
-				// sys::logger( sprintf( 'Valid Firefox: %s : %s', self::version(), self::$_useragent));
+				// logger::info( sprintf( 'Valid Firefox: %s : %s', self::version(), self::$_useragent));
 				return true;
 			}
 
@@ -179,11 +179,10 @@ abstract class useragent {
 
 		if (ini_get('browscap')) {
 
-			/*
+			/**
 			 * get latest version of browscap.ini here: http://browscap.org/
 			 */
 			$browser = get_browser(null, false);
-			// sys::dump( $browser);
 			if (isset($browser->version)) return ($browser->version);
 		}
 

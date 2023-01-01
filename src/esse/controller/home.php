@@ -36,7 +36,7 @@ class home extends controller {
     $page = page::bootstrap();
 
     /**
-     * to highlight using highligh.js
+     * syntax highlighting using highlight.js
      */
     // $version = '11.7.0';
 

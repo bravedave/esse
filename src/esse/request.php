@@ -139,7 +139,7 @@ class request {
 
             if (filter_var($ip, FILTER_VALIDATE_IP) !== false) {
 
-              // \sys::logger( sprintf('<%s> %s', $ip, __METHOD__));
+              // logger::info( sprintf('<%s> %s', $ip, __METHOD__));
               return $ip;
             }
           } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) !== false) {
@@ -166,7 +166,7 @@ class request {
       if (4 == count($a)) {
 
         $subnet = sprintf('%d.%d.%d', $a[0], $a[1], $a[2]);
-        // \sys::logger( sprintf('<%s> %s', $subnet, __METHOD__));
+        // logger::info( sprintf('<%s> %s', $subnet, __METHOD__));
         return $subnet;
       }
     }
@@ -188,7 +188,7 @@ class request {
     $thisSubNet = self::getSubNet($thisIP);
     $remoteSubNet = self::getSubNet($remoteIP);
 
-    //~ \sys::logger( sprintf( '%s/%s :: %s/%s', $thisIP, $thisSubNet, $remoteIP, $remoteSubNet));
+    // logger::info( sprintf( '%s/%s :: %s/%s', $thisIP, $thisSubNet, $remoteIP, $remoteSubNet));
 
     return ($thisSubNet == $remoteSubNet);
   }

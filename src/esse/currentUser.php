@@ -39,4 +39,9 @@ abstract class currentUser {
   public static function name(): string {
     return '';
   }
+
+  public static function option(string $key, null|string $val = null): string {
+
+    return config::option($key, $val);
+  }
 }
