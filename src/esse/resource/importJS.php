@@ -19,7 +19,7 @@ class importJS extends application {
 
   protected static function _bootstrap() {
 
-    $sourcePath = realpath(__DIR__ . '/../../../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js');
+    $sourcePath = __DIR__ . '/../../../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js';
     $src = realpath($sourcePath);
     if ( $src) {
 
