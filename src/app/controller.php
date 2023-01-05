@@ -8,7 +8,7 @@
  *
 */
 
-class controller extends \bravedave\esse\controller {
+class controller extends bravedave\esse\controller {
 
   protected function before(): void {
 

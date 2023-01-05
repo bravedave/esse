@@ -19,6 +19,8 @@ use RuntimeException;
  */
 class controller {
 
+  protected $data;
+
   protected array $paths = [];
 
   /**

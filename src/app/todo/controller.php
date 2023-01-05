@@ -11,7 +11,6 @@
 namespace todo;
 
 use bravedave\esse\json;
-use bravedave\esse\logger;
 use bravedave\esse\page;
 use bravedave\esse\request;
 
